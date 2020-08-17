@@ -9,7 +9,7 @@ import {
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 
-const MapCanvas = () => {
+const MapLeaflet = () => {
   return (
     <React.Fragment>
       <Map
@@ -56,4 +56,4 @@ const MapCanvas = () => {
   );
 };
 
-export default MapCanvas;
+export default MapLeaflet;
