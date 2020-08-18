@@ -1,8 +1,9 @@
 import React from "react";
 import logo from "./logo.svg";
 import "./App.css";
-import MapCanvas from "./components/MapCanvas";
-import MapLeaflet from "./components/MapCanvas";
+import MapCanvas from "./components/MapLeaflet";
+import MapLeaflet from "./components/MapLeaflet";
+import MapMapBox from "./components/MapMapbox";
 
 function App() {
   return (
