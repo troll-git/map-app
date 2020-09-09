@@ -36,3 +36,11 @@
     transform: rotate(360deg);
   }
 }
+
+.TooltipParcelInfo {
+  background: red !important;
+  position: absolute !important;
+  top: 0px !important;
+  right: 0px !important;
+  display: block !important;
+}

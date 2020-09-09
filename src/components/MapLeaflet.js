@@ -2,60 +2,67 @@ import React, { Component } from "react";
 import {
   Map,
   TileLayer,
+  Pane,
   Marker,
   Popup,
   WMSTileLayer,
+  LayerGroup,
   LayersControl,
+  AttributionControl,
+  DivOverlay,
   GeoJSON,
+  Tooltip,
+  Circle,
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import Data from "../assets/parceltest84.json";
+import PolygonLayer from "../components/PolygonLayer";
+import PolygonControl from "../components/PolygonControl";
 
 const MapLeaflet = () => {
-  const datag = Data;
-  console.log(datag);
   return (
     <React.Fragment>
       <Map
         id="map"
-        center={[49.56, 20.63]}
+        center={[49.56, 20.635]}
         zoom={19}
         style={{ height: "800px" }}
         maxZoom={19}
       >
-        <LayersControl position="topright">
-          <LayersControl.BaseLayer name="osm" checked={true}>
-            <TileLayer
-              attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />
-          </LayersControl.BaseLayer>
-          <LayersControl.BaseLayer name="osm2">
-            <TileLayer
-              attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />
-          </LayersControl.BaseLayer>
-          <LayersControl.Overlay name="orto">
-            <WMSTileLayer
-              url="http://159.65.197.227:8080/geoserver/cite/wms?"
-              layers="73121_876869_M-34-90-A-d-1-3"
-              transparent={true}
-              format="image/png"
-              opacity={0.8}
-            />
-          </LayersControl.Overlay>
-          <LayersControl.Overlay name="orto">
-            <WMSTileLayer
-              url="http://mapy.geoportal.gov.pl/wss/service/img/guest/ORTO/MapServer/WMSServer?"
-              layers="Raster"
-              transparent={true}
-              format="image/png"
-              opacity={0.8}
-            />
-          </LayersControl.Overlay>
-        </LayersControl>
-        <GeoJSON data={datag} />
+        <LayerGroup>
+          <LayersControl position="topright">
+            <LayersControl.BaseLayer name="osm" checked={true}>
+              <TileLayer
+                attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              />
+            </LayersControl.BaseLayer>
+            <LayersControl.BaseLayer name="esraj">
+              <TileLayer
+                attribution='Tiles © <a href="https://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer">ArcGIS</a>'
+                url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}"
+              />
+            </LayersControl.BaseLayer>
+            <LayersControl.Overlay name="orto">
+              <WMSTileLayer
+                url="http://159.65.197.227:8080/geoserver/cite/wms?"
+                layers="73121_876869_M-34-90-A-d-1-3"
+                transparent={true}
+                format="image/png"
+                opacity={0.8}
+              />
+            </LayersControl.Overlay>
+            <LayersControl.Overlay name="orto">
+              <WMSTileLayer
+                url="http://mapy.geoportal.gov.pl/wss/service/img/guest/ORTO/MapServer/WMSServer?"
+                layers="Raster"
+                transparent={true}
+                format="image/png"
+                opacity={0.8}
+              />
+            </LayersControl.Overlay>
+          </LayersControl>
+          <PolygonLayer />
+        </LayerGroup>
       </Map>
     </React.Fragment>
   );

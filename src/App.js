@@ -8,7 +8,7 @@ import MapMapBox from "./components/MapMapbox";
 function App() {
   return (
     <div className="App">
-      <h1>Mapa srapa</h1>
+      <h1>Map</h1>
       <MapLeaflet />
     </div>
   );
