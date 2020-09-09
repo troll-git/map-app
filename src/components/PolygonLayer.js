@@ -1,14 +1,12 @@
-import React, { Component, useEffect, useRef, useState } from "react";
-import { GeoJSON, Tooltip, Pane, MapControl } from "react-leaflet";
-import Data from "../assets/parceltest84.json";
-import { Modal } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import React, { useState } from "react";
+import { GeoJSON } from "react-leaflet";
+import Data from "../assets/starysacz.json";
+
 import PolygonModal from "../components/PolygonModal";
 import MapInfo from "../components/MapInfo";
 
-const PolygonLayer = () => {
+const PolygonLayer = (props) => {
   const [open, setOpen] = useState(false);
-  const [openP, setOpenP] = useState(false);
   const [feat, setFeat] = useState(undefined);
   const [id, setId] = useState(undefined);
   const [idP, setIdP] = useState(undefined);
@@ -37,35 +35,24 @@ const PolygonLayer = () => {
 
   let selected = null;
   let highlighted = null;
-  let position = [50, 20];
 
   return (
     <React.Fragment>
-      <Pane name="fixed">ererr</Pane>
       <GeoJSON
         style={{ color: "blue" }}
         data={Data}
         onEachFeature={(feature, layer) => {
           layer.on("click", () => {
+            props.bbox(layer.getBounds());
             setOpen(true);
-            console.log(open);
             setFeat(feature);
             setId(Date.now());
-            console.log(Date.now());
-            console.log(layer);
-            //console.log(feature);
             select(layer);
-            console.log("click");
           });
           layer.on("mouseover", () => {
             highlight(layer);
             setFeat(feature);
             setIdP(Date.now());
-          });
-
-          layer.bindTooltip(feature.properties.gmina, {
-            pane: "fixed",
-            className: "TooltipParcelInfo",
           });
         }}
       />

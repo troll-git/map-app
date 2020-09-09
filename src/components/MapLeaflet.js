@@ -1,24 +1,20 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Map,
   TileLayer,
-  Pane,
-  Marker,
-  Popup,
   WMSTileLayer,
   LayerGroup,
   LayersControl,
-  AttributionControl,
-  DivOverlay,
-  GeoJSON,
-  Tooltip,
-  Circle,
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import PolygonLayer from "../components/PolygonLayer";
-import PolygonControl from "../components/PolygonControl";
 
 const MapLeaflet = () => {
+  const [bbox, setBbox] = useState(undefined);
+  const getBbox = (bbox) => {
+    setBbox(bbox);
+  };
+
   return (
     <React.Fragment>
       <Map
@@ -27,6 +23,7 @@ const MapLeaflet = () => {
         zoom={19}
         style={{ height: "800px" }}
         maxZoom={19}
+        bounds={bbox}
       >
         <LayerGroup>
           <LayersControl position="topright">
@@ -45,7 +42,7 @@ const MapLeaflet = () => {
             <LayersControl.Overlay name="orto">
               <WMSTileLayer
                 url="http://159.65.197.227:8080/geoserver/cite/wms?"
-                layers="starysacz"
+                layers="stary"
                 transparent={true}
                 format="image/png"
                 opacity={0.8}
@@ -61,7 +58,7 @@ const MapLeaflet = () => {
               />
             </LayersControl.Overlay>
           </LayersControl>
-          <PolygonLayer />
+          <PolygonLayer bbox={getBbox} />
         </LayerGroup>
       </Map>
     </React.Fragment>

@@ -1,23 +1,8 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Modal from "@material-ui/core/Modal";
-import { useState, useEffect } from "react";
-import {
-  Map,
-  TileLayer,
-  Marker,
-  Popup,
-  WMSTileLayer,
-  LayerGroup,
-  LayersControl,
-  AttributionControl,
-  DivOverlay,
-  GeoJSON,
-  Tooltip,
-} from "react-leaflet";
+import { useEffect } from "react";
 import { Popper } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
-import PolygonModal from "../components/PolygonModal";
 
 function getModalStyle() {
   const top = 1;
@@ -42,17 +27,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function MapInfo(props) {
-  const classes = useStyles();
   // getModalStyle is not a pure function, we roll the style only on the first render
-  const [modalStyle] = React.useState(getModalStyle);
   const [open, setOpen] = React.useState(props.opened);
-  const [numerDzialki, setnumerDzialki] = React.useState("");
-  let closeImg = {
-    cursor: "pointer",
-    float: "right",
-    marginTop: "5px",
-    width: "20px",
-  };
+  const [data, setData] = React.useState("");
 
   useEffect(() => {
     setOpen(props.opened);
@@ -66,26 +43,36 @@ export default function MapInfo(props) {
   const handleData = () => {
     if (!!props.feat) {
       const dat = Object.values(props.feat.properties).map((e) => e);
-      setnumerDzialki(dat[5]);
-      console.log(dat);
+      setData(dat);
     } else {
-      setnumerDzialki(0);
+      console.log("ss");
     }
   };
-
-  const body = (
-    <div style={modalStyle} className={classes.paper}>
-      <h2 id="simple-modal-title">{numerDzialki}</h2>
-      <p id="simple-modal-description">Opis działki.</p>
-    </div>
-  );
 
   return (
     <div>
       <Popper open="true" onClose={handleClose}>
         <Typography variant="subtitle2" gutterBottom>
-          subtitle2. Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-          Quos blanditiis tenetur {numerDzialki === 0 ? "" : numerDzialki}
+          Numer działki: {data[5]}
+        </Typography>
+        <Typography variant="subtitle2" gutterBottom>
+          {data === ""
+            ? ""
+            : "Województwo: " +
+              data[6] +
+              " powiat: " +
+              data[7] +
+              " gmina: " +
+              data[8]}
+        </Typography>
+        <Typography variant="subtitle2" gutterBottom>
+          {data === ""
+            ? ""
+            : "Obwód działki [m]: " +
+              data[10].toFixed(2) +
+              " Powierzchnia działki [ar]: " +
+              (data[11] / 100).toFixed(2) +
+              "."}
         </Typography>
       </Popper>
     </div>

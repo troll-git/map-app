@@ -89,11 +89,10 @@ export default function PolygonModal(props) {
         onClose={handleClose}
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
-        hideBackdrop="true"
-        disableBackdropClick="true"
-        disableScrollLock="true"
-        closeAfterTransition="true"
-        hasBackdrop="false"
+        hideBackdrop={true}
+        disableBackdropClick={true}
+        disableScrollLock={true}
+        closeAfterTransition={true}
       >
         {body}
       </Modal>
