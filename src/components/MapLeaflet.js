@@ -45,7 +45,7 @@ const MapLeaflet = () => {
             <LayersControl.Overlay name="orto">
               <WMSTileLayer
                 url="http://159.65.197.227:8080/geoserver/cite/wms?"
-                layers="73121_876869_M-34-90-A-d-1-3"
+                layers="starysacz"
                 transparent={true}
                 format="image/png"
                 opacity={0.8}

@@ -16,6 +16,7 @@ import {
   Tooltip,
 } from "react-leaflet";
 import { Popper } from "@material-ui/core";
+import Typography from "@material-ui/core/Typography";
 import PolygonModal from "../components/PolygonModal";
 
 function getModalStyle() {
@@ -45,7 +46,7 @@ export default function MapInfo(props) {
   // getModalStyle is not a pure function, we roll the style only on the first render
   const [modalStyle] = React.useState(getModalStyle);
   const [open, setOpen] = React.useState(props.opened);
-  const [numerDzialki, setnumerDzialki] = React.useState(0);
+  const [numerDzialki, setnumerDzialki] = React.useState("");
   let closeImg = {
     cursor: "pointer",
     float: "right",
@@ -81,18 +82,11 @@ export default function MapInfo(props) {
 
   return (
     <div>
-      <Popper
-        open="true"
-        onClose={handleClose}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
-        hideBackdrop="true"
-        disableBackdropClick="true"
-        disableScrollLock="true"
-        closeAfterTransition="true"
-        hasBackdrop="false"
-      >
-        <h1>{numerDzialki}</h1>
+      <Popper open="true" onClose={handleClose}>
+        <Typography variant="subtitle2" gutterBottom>
+          subtitle2. Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+          Quos blanditiis tenetur {numerDzialki === 0 ? "" : numerDzialki}
+        </Typography>
       </Popper>
     </div>
   );
