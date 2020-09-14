@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { GeoJSON } from "react-leaflet";
-import Data from "../assets/starysacz.json";
+import DataF from "../assets/starysacz.json";
 
 import PolygonModal from "../components/PolygonModal";
 import MapInfo from "../components/MapInfo";
+import { API } from "../components/api-service";
+import axios from "axios";
+import useSWR from "swr";
 
 const PolygonLayer = (props) => {
   const [open, setOpen] = useState(false);
@@ -39,11 +42,13 @@ const PolygonLayer = (props) => {
   return (
     <React.Fragment>
       <GeoJSON
+        //key={`geojson-01`}
         style={{ color: "blue" }}
-        data={Data}
+        data={props.dane}
         onEachFeature={(feature, layer) => {
           layer.on("click", () => {
             props.bbox(layer.getBounds());
+            //console.log(dane);
             setOpen(true);
             setFeat(feature);
             setId(Date.now());
@@ -53,6 +58,7 @@ const PolygonLayer = (props) => {
             highlight(layer);
             setFeat(feature);
             setIdP(Date.now());
+            //console.log(dane.features[0].properties.powiat);
           });
         }}
       />

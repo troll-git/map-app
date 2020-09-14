@@ -1,6 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Popper } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 
@@ -28,12 +28,11 @@ const useStyles = makeStyles((theme) => ({
 
 export default function MapInfo(props) {
   // getModalStyle is not a pure function, we roll the style only on the first render
-  const [open, setOpen] = React.useState(props.opened);
-  const [data, setData] = React.useState("");
+  const [open, setOpen] = useState(props.opened);
+  const [data, setData] = useState("");
 
   useEffect(() => {
     setOpen(props.opened);
-    console.log(open);
     handleData();
   }, [props]);
 

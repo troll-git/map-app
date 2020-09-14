@@ -4,6 +4,7 @@ import "./App.css";
 import MapCanvas from "./components/MapLeaflet";
 import MapLeaflet from "./components/MapLeaflet";
 import MapMapBox from "./components/MapMapbox";
+import TestC from "./components/testcomponent";
 
 function App() {
   return (
