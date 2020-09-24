@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Map,
   TileLayer,
@@ -9,10 +9,16 @@ import {
 import "leaflet/dist/leaflet.css";
 import PolygonLayer from "../components/PolygonLayer";
 import axios from "axios";
+import { bounds } from "leaflet";
 
 const MapLeaflet = () => {
-  const [bbox, setBbox] = useState(undefined);
+  const [bbox, setBbox] = useState([
+    [45, 56],
+    [0, 5],
+  ]);
+  const [center, setCenter] = useState([49.56, 20.635]);
   const [dane, setDane] = useState(undefined);
+  const [zoom, setZoom] = useState(20);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -23,20 +29,29 @@ const MapLeaflet = () => {
     };
     fetchData();
   }, []);
-
+  useEffect(() => {
+    console.log("dick");
+  }, [zoom]);
   const getBbox = (bbox) => {
     setBbox(bbox);
+  };
+
+  const testG = () => {
+    setZoom(Map.zoom);
+    console.log(zoom);
   };
 
   return (
     <React.Fragment>
       <Map
         id="map"
-        center={[49.56, 20.635]}
-        zoom={19}
+        center={center}
+        zoom={zoom}
         style={{ height: "800px" }}
         maxZoom={19}
         bounds={bbox}
+        animate="true"
+        //onClick={testG}
       >
         <LayerGroup>
           <LayersControl position="topright">
@@ -71,7 +86,7 @@ const MapLeaflet = () => {
               />
             </LayersControl.Overlay>
           </LayersControl>
-          {!!dane ? <PolygonLayer bbox={getBbox} dane={dane} /> : <p>hjmj</p>}
+          {!!dane ? <PolygonLayer bbox={getBbox} dane={dane} /> : <p>dfd</p>}
         </LayerGroup>
       </Map>
     </React.Fragment>
