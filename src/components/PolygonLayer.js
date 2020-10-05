@@ -39,6 +39,7 @@ const PolygonLayer = (props) => {
   let selected = null;
   let highlighted = null;
 
+  //console.log(props.dane);
   return (
     <React.Fragment>
       <GeoJSON

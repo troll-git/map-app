@@ -9,8 +9,9 @@ import {
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import PolygonLayer from "../components/PolygonLayer";
+import PozwoleniaLayer from "../components/PozwoleniaLayer";
 import axios from "axios";
-import { bounds } from "leaflet";
+import { bounds, map } from "leaflet";
 
 const DEFAULT_VIEWPORT = {
   center: [49.55813806107707, 20.633729696273807],
@@ -21,34 +22,98 @@ class MapClass extends React.Component {
   constructor(props) {
     super(props);
     this.mapRef = React.createRef();
-    this.state = { dane: "", viewport: DEFAULT_VIEWPORT, bbox: "" };
+    this.state = {
+      dane: "",
+      pozwolenia: "",
+      viewport: DEFAULT_VIEWPORT,
+      bbox: "",
+    };
   }
 
-  componentDidMount() {
+  /*componentDidMount() {
     const fetchData = async () => {
       const result = await axios("http://127.0.0.1:8000/api/dzialki/");
       console.log(result.data);
       this.setState({
         dane: result.data,
         viewport: DEFAULT_VIEWPORT,
-        bbox: "po",
+        bbox: "",
       });
       //this.bbox = 45;
       //return result.data;
     };
     fetchData();
-  }
+  }*/
 
-  handleClick = () => {
+  handleClick = (viewport) => {
+    this.setState({ dane: null });
+    this.setState({ pozwolenia: null });
     const map = this.mapRef.current;
     console.log(map.leafletElement.getBounds());
+    console.log(viewport.zoom);
+    const fetchData = async () => {
+      const result = await axios(
+        "http://127.0.0.1:8000/api/dzialki/?bbox=" +
+          this.getBoundaries(map)._southWest.lat +
+          "," +
+          this.getBoundaries(map)._southWest.lng +
+          "," +
+          this.getBoundaries(map)._northEast.lat +
+          "," +
+          this.getBoundaries(map)._northEast.lng
+      );
+      console.log(result.data);
+      console.log("fetching data");
+      this.setState({
+        dane: result.data,
+        viewport: DEFAULT_VIEWPORT,
+      });
+    };
+
+    const fetchPozwolenia = async () => {
+      const result = await axios(
+        "http://127.0.0.1:8000/api/pozwolenia_geom/?bbox=" +
+          this.getBoundaries(map)._southWest.lat +
+          "," +
+          this.getBoundaries(map)._southWest.lng +
+          "," +
+          this.getBoundaries(map)._northEast.lat +
+          "," +
+          this.getBoundaries(map)._northEast.lng
+      );
+      //console.log(result.data);
+      console.log("fetching data");
+      this.setState({
+        pozwolenia: result.data,
+        viewport: DEFAULT_VIEWPORT,
+      });
+    };
+    {
+      viewport.zoom > 18 ? fetchData() : this.setState({ dane: null });
+    }
+    {
+      viewport.zoom > 13
+        ? fetchPozwolenia()
+        : this.setState({ pozwolenia: null });
+    }
   };
 
-  onViewportChanged() {
-    //this.setState({ viewport: viewport });
+  getBoundaries = (map) => {
+    return map.leafletElement.getBounds();
+  };
+
+  getBbox = (bbox) => {
+    console.log(bbox);
+    console.log("parcel");
     const map = this.mapRef.current;
-    console.log(map.leafletElement.getBounds());
-  }
+    map.leafletElement.fitBounds(bbox);
+  };
+
+  getBounds;
+
+  onViewportChanged = (viewport: Viewport) => {
+    this.setState({ viewport });
+  };
   render() {
     return (
       <Map
@@ -87,7 +152,7 @@ class MapClass extends React.Component {
                 opacity={0.8}
               />
             </LayersControl.Overlay>
-            <LayersControl.Overlay name="orto">
+            <LayersControl.Overlay name="orto2">
               <WMSTileLayer
                 url="http://mapy.geoportal.gov.pl/wss/service/img/guest/ORTO/MapServer/WMSServer?"
                 layers="Raster"
@@ -96,12 +161,17 @@ class MapClass extends React.Component {
                 opacity={0.8}
               />
             </LayersControl.Overlay>
+            {!!this.state.pozwolenia ? (
+              <PozwoleniaLayer dane={this.state.pozwolenia} />
+            ) : (
+              <p>doop</p>
+            )}
+            {!!this.state.dane ? (
+              <PolygonLayer bbox={this.getBbox} dane={this.state.dane} />
+            ) : (
+              <p>dfd</p>
+            )}
           </LayersControl>
-          {!!this.state.dane ? (
-            <PolygonLayer bbox={this.bbox} dane={this.state.dane} />
-          ) : (
-            <p>dfd</p>
-          )}
         </LayerGroup>
       </Map>
     );
