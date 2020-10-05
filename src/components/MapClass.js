@@ -6,12 +6,14 @@ import {
   LayerGroup,
   LayersControl,
   Viewport,
+  DivOverlay,
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import PolygonLayer from "../components/PolygonLayer";
 import PozwoleniaLayer from "../components/PozwoleniaLayer";
 import axios from "axios";
 import { bounds, map } from "leaflet";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const DEFAULT_VIEWPORT = {
   center: [49.55813806107707, 20.633729696273807],
@@ -92,7 +94,7 @@ class MapClass extends React.Component {
       viewport.zoom > 18 ? fetchData() : this.setState({ dane: null });
     }
     {
-      viewport.zoom > 13
+      viewport.zoom > 10
         ? fetchPozwolenia()
         : this.setState({ pozwolenia: null });
     }
@@ -172,6 +174,7 @@ class MapClass extends React.Component {
               <p>dfd</p>
             )}
           </LayersControl>
+          <CircularProgress />
         </LayerGroup>
       </Map>
     );

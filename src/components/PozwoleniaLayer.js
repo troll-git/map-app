@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { GeoJSON } from "react-leaflet";
+import { GeoJSON, Marker } from "react-leaflet";
 import DataF from "../assets/starysacz.json";
 
 import PolygonModal from "../components/PolygonModal";
@@ -8,6 +8,8 @@ import { API } from "../components/api-service";
 import axios from "axios";
 import useSWR from "swr";
 import L from "leaflet";
+import MarkerCluserGroup from "react-leaflet-markercluster";
+import "react-leaflet-markercluster/dist/styles.min.css";
 
 delete L.Icon.Default.prototype._getIconUrl;
 
@@ -26,11 +28,13 @@ const PozwoleniaLayer = (props) => {
   console.log(props.dane);
   return (
     <React.Fragment>
-      <GeoJSON
-        //key={`geojson-01`}
-        style={{ color: "blue" }}
-        data={props.dane}
-      />
+      <MarkerCluserGroup>
+        <GeoJSON
+          //key={`geojson-01`}
+          style={{ color: "blue" }}
+          data={props.dane}
+        />
+      </MarkerCluserGroup>
     </React.Fragment>
   );
 };
