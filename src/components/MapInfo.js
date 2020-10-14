@@ -52,25 +52,25 @@ export default function MapInfo(props) {
     <div>
       <Popper open="true" onClose={handleClose}>
         <Typography variant="subtitle2" gutterBottom>
-          Numer działki: {data[5]}
+          Numer działki: {data[4]}
         </Typography>
         <Typography variant="subtitle2" gutterBottom>
           {data === ""
             ? ""
             : "Województwo: " +
-              data[6] +
+              data[5] +
               " powiat: " +
-              data[7] +
+              data[6] +
               " gmina: " +
-              data[8]}
+              data[7]}
         </Typography>
         <Typography variant="subtitle2" gutterBottom>
           {data === ""
             ? ""
             : "Obwód działki [m]: " +
-              data[10].toFixed(2) +
+              data[9].toFixed(2) +
               " Powierzchnia działki [ar]: " +
-              (data[11] / 100).toFixed(2) +
+              (data[10] / 100).toFixed(2) +
               "."}
         </Typography>
       </Popper>

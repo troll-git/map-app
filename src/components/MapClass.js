@@ -11,6 +11,7 @@ import {
 import "leaflet/dist/leaflet.css";
 import PolygonLayer from "../components/PolygonLayer";
 import PozwoleniaLayer from "../components/PozwoleniaLayer";
+import WnioskiLayer from "../components/WnioskiLayer"
 import axios from "axios";
 import { bounds, map } from "leaflet";
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -27,6 +28,7 @@ class MapClass extends React.Component {
     this.state = {
       dane: "",
       pozwolenia: "",
+      wnioski:"",
       viewport: DEFAULT_VIEWPORT,
       bbox: "",
     };
@@ -50,6 +52,7 @@ class MapClass extends React.Component {
   handleClick = (viewport) => {
     this.setState({ dane: null });
     this.setState({ pozwolenia: null });
+    this.setState({ wnioski: null });
     const map = this.mapRef.current;
     console.log(map.leafletElement.getBounds());
     console.log(viewport.zoom);
@@ -90,13 +93,37 @@ class MapClass extends React.Component {
         viewport: DEFAULT_VIEWPORT,
       });
     };
+    const fetchWnioski = async () => {
+      const result = await axios(
+        "http://127.0.0.1:8000/api/wnioski_geom/?bbox=" +
+          this.getBoundaries(map)._southWest.lat +
+          "," +
+          this.getBoundaries(map)._southWest.lng +
+          "," +
+          this.getBoundaries(map)._northEast.lat +
+          "," +
+          this.getBoundaries(map)._northEast.lng
+      );
+      //console.log(result.data);
+      console.log("fetching data");
+      this.setState({
+        wnioski: result.data,
+        viewport: DEFAULT_VIEWPORT,
+      });
+    };
+
     {
-      viewport.zoom > 18 ? fetchData() : this.setState({ dane: null });
+      viewport.zoom > 17 ? fetchData() : this.setState({ dane: null });
     }
     {
       viewport.zoom > 10
         ? fetchPozwolenia()
         : this.setState({ pozwolenia: null });
+    }
+    {
+      viewport.zoom > 5
+        ? fetchWnioski()
+        : this.setState({ wnioski: null });
     }
   };
 
@@ -166,7 +193,24 @@ class MapClass extends React.Component {
             {!!this.state.pozwolenia ? (
               <PozwoleniaLayer dane={this.state.pozwolenia} />
             ) : (
-              <p>doop</p>
+              <CircularProgress
+                style={{
+                  zIndex: 999,
+                  position: "absolute",
+                  top: 500,
+                }}
+              />
+            )}
+            {!!this.state.wnioski ? (
+              <WnioskiLayer dane={this.state.wnioski} />
+            ) : (
+              <CircularProgress
+                style={{
+                  zIndex: 999,
+                  position: "absolute",
+                  top: 400,
+                }}
+              />
             )}
             {!!this.state.dane ? (
               <PolygonLayer bbox={this.getBbox} dane={this.state.dane} />
@@ -174,7 +218,6 @@ class MapClass extends React.Component {
               <p>dfd</p>
             )}
           </LayersControl>
-          <CircularProgress />
         </LayerGroup>
       </Map>
     );

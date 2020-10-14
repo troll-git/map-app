@@ -11,15 +11,15 @@ import L from "leaflet";
 import MarkerCluserGroup from "react-leaflet-markercluster";
 import "react-leaflet-markercluster/dist/styles.min.css";
 
-delete L.Icon.Default.prototype._getIconUrl;
+//delete L.Icon.Default.prototype._getIconUrl;
 
-L.Icon.Default.mergeOptions({
-  iconRetinaUtl: require("leaflet/dist/images/marker-icon-2x.png"),
-  iconUrl: require("leaflet/dist/images/marker-icon.png"),
-  shadowUrl: require("leaflet/dist/images/marker-shadow.png"),
-});
+//L.Icon.Default.mergeOptions({
+//  iconRetinaUtl: require("leaflet/dist/images/marker-icon-2x.png"),
+//  iconUrl: require("../assets/redmarker.png"),
+//  shadowUrl: require("leaflet/dist/images/marker-shadow.png"),
+//});
 
-const PozwoleniaLayer = (props) => {
+const WnioskiLayer = (props) => {
   const [open, setOpen] = useState(false);
   const [feat, setFeat] = useState(undefined);
   const [id, setId] = useState(undefined);
@@ -40,7 +40,7 @@ const PozwoleniaLayer = (props) => {
       <MarkerCluserGroup>
         <GeoJSON
           //key={`geojson-01`}
-          style={{ color: "blue" }}
+          style={{ color: "yellow" }}
           data={props.dane}
           onEachFeature={(feature, layer) => {
             layer.on("click", () => {
@@ -54,4 +54,4 @@ const PozwoleniaLayer = (props) => {
   );
 };
 
-export default PozwoleniaLayer;
+export default WnioskiLayer;
