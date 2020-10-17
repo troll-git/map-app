@@ -18,7 +18,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 
 const DEFAULT_VIEWPORT = {
   center: [49.55813806107707, 20.633729696273807],
-  zoom: 16,
+  zoom: 12,
 };
 
 class MapClass extends React.Component {
@@ -28,101 +28,109 @@ class MapClass extends React.Component {
     this.state = {
       dane: "",
       pozwolenia: "",
+      //enabledPozwolenia:this.enabledPozwolenia,
       wnioski:"",
       viewport: DEFAULT_VIEWPORT,
       bbox: "",
     };
   }
 
-  /*componentDidMount() {
-    const fetchData = async () => {
-      const result = await axios("http://127.0.0.1:8000/api/dzialki/");
-      console.log(result.data);
-      this.setState({
-        dane: result.data,
-        viewport: DEFAULT_VIEWPORT,
-        bbox: "",
-      });
-      //this.bbox = 45;
-      //return result.data;
-    };
-    fetchData();
-  }*/
+  fetchData = async () => {
+    const map = this.mapRef.current;
+    const result = await axios(
+      "http://127.0.0.1:8000/api/dzialki/?bbox=" +
+        this.getBoundaries(map)._southWest.lat +
+        "," +
+        this.getBoundaries(map)._southWest.lng +
+        "," +
+        this.getBoundaries(map)._northEast.lat +
+        "," +
+        this.getBoundaries(map)._northEast.lng
+    );
+    this.setState({
+      dane: result.data,
+      //viewport: DEFAULT_VIEWPORT,
+    });
+  };
+
+  fetchPozwolenia = async () => {
+    const map = this.mapRef.current;
+    const result = await axios(
+      "http://127.0.0.1:8000/api/pozwolenia_geom/?bbox=" +
+        this.getBoundaries(map)._southWest.lat +
+        "," +
+        this.getBoundaries(map)._southWest.lng +
+        "," +
+        this.getBoundaries(map)._northEast.lat +
+        "," +
+        this.getBoundaries(map)._northEast.lng
+    );
+    //console.log(result.data);
+    //console.log("fetching data");
+    this.setState({
+      pozwolenia: result.data,
+      //viewport: DEFAULT_VIEWPORT,
+    });
+  };
+  
+
+  fetchWnioski = async () => {
+    const map = this.mapRef.current;
+    const result = await axios(
+      "http://127.0.0.1:8000/api/wnioski_geom/?bbox=" +
+        this.getBoundaries(map)._southWest.lat +
+        "," +
+        this.getBoundaries(map)._southWest.lng +
+        "," +
+        this.getBoundaries(map)._northEast.lat +
+        "," +
+        this.getBoundaries(map)._northEast.lng
+    );
+    //console.log(result.data);
+    //console.log("fetching data");
+    this.setState({
+      wnioski: result.data,
+      //viewport: DEFAULT_VIEWPORT,
+    });
+  };
+
+  componentDidMount(){
+    //console.log(this.props.enabledPozwolenia)
+    this.fetchPozwolenia()
+    this.fetchWnioski()
+  }
+
+  componentDidUpdate(prevProps){
+    const map = this.mapRef.current;
+      
+    if (prevProps.enabledPozwolenia !== this.props.enabledPozwolenia) {
+      if(map.viewport.zoom > 10 && this.props.enabledPozwolenia) this.fetchPozwolenia()
+      if(!this.props.enabledPozwolenia)this.setState({ pozwolenia: null });
+    }  
+    if (prevProps.enabledWnioski !== this.props.enabledWnioski) {
+      if(map.viewport.zoom > 10 && this.props.enabledWnioski) this.fetchWnioski()
+      if(!this.props.enabledWnioski)this.setState({ wnioski: null });
+    }     
+  }
+  
 
   handleClick = (viewport) => {
+    console.log(this.props.enabledPozwolenia)
     this.setState({ dane: null });
     this.setState({ pozwolenia: null });
     this.setState({ wnioski: null });
     const map = this.mapRef.current;
-    console.log(map.leafletElement.getBounds());
-    console.log(viewport.zoom);
-    const fetchData = async () => {
-      const result = await axios(
-        "http://127.0.0.1:8000/api/dzialki/?bbox=" +
-          this.getBoundaries(map)._southWest.lat +
-          "," +
-          this.getBoundaries(map)._southWest.lng +
-          "," +
-          this.getBoundaries(map)._northEast.lat +
-          "," +
-          this.getBoundaries(map)._northEast.lng
-      );
-      console.log(result.data);
-      console.log("fetching data");
-      this.setState({
-        dane: result.data,
-        viewport: DEFAULT_VIEWPORT,
-      });
-    };
-
-    const fetchPozwolenia = async () => {
-      const result = await axios(
-        "http://127.0.0.1:8000/api/pozwolenia_geom/?bbox=" +
-          this.getBoundaries(map)._southWest.lat +
-          "," +
-          this.getBoundaries(map)._southWest.lng +
-          "," +
-          this.getBoundaries(map)._northEast.lat +
-          "," +
-          this.getBoundaries(map)._northEast.lng
-      );
-      //console.log(result.data);
-      console.log("fetching data");
-      this.setState({
-        pozwolenia: result.data,
-        viewport: DEFAULT_VIEWPORT,
-      });
-    };
-    const fetchWnioski = async () => {
-      const result = await axios(
-        "http://127.0.0.1:8000/api/wnioski_geom/?bbox=" +
-          this.getBoundaries(map)._southWest.lat +
-          "," +
-          this.getBoundaries(map)._southWest.lng +
-          "," +
-          this.getBoundaries(map)._northEast.lat +
-          "," +
-          this.getBoundaries(map)._northEast.lng
-      );
-      //console.log(result.data);
-      console.log("fetching data");
-      this.setState({
-        wnioski: result.data,
-        viewport: DEFAULT_VIEWPORT,
-      });
-    };
-
     {
-      viewport.zoom > 17 ? fetchData() : this.setState({ dane: null });
+      viewport.zoom > 17 ? this.fetchData() : this.setState({ dane: null });
     }
     {
-      viewport.zoom > 10
-        ? fetchPozwolenia()
+      viewport.zoom > 10 && this.props.enabledPozwolenia
+        ? this.fetchPozwolenia()
         : this.setState({ pozwolenia: null });
     }
     {
-      viewport.zoom > 5
-        ? fetchWnioski()
+      viewport.zoom > 5 && this.props.enabledWnioski
+        ? this.fetchWnioski()
         : this.setState({ wnioski: null });
     }
   };
@@ -140,9 +148,9 @@ class MapClass extends React.Component {
 
   getBounds;
 
-  onViewportChanged = (viewport: Viewport) => {
+  /*onViewportChanged = (viewport: Viewport) => {
     this.setState({ viewport });
-  };
+  };*/
   render() {
     return (
       <Map

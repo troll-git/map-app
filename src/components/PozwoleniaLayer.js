@@ -40,7 +40,7 @@ const PozwoleniaLayer = (props) => {
       <MarkerCluserGroup>
         <GeoJSON
           //key={`geojson-01`}
-          style={{ color: "blue" }}
+          style={{ color: "red" }}
           data={props.dane}
           onEachFeature={(feature, layer) => {
             layer.on("click", () => {

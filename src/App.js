@@ -6,12 +6,12 @@ import MapLeaflet from "./components/MapLeaflet";
 import MapClass from "./components/MapClass";
 import MapMapBox from "./components/MapMapbox";
 import TestC from "./components/testcomponent";
+import MainCanvas from "./components/MainCanvas"
 
 function App() {
   return (
     <div className="App">
-      <h1>Map</h1>
-      <MapClass />
+      <MainCanvas />
     </div>
   );
 }

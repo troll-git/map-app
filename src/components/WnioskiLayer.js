@@ -19,6 +19,26 @@ import "react-leaflet-markercluster/dist/styles.min.css";
 //  shadowUrl: require("leaflet/dist/images/marker-shadow.png"),
 //});
 
+var myIcon = L.icon({
+    iconUrl: require('../assets/redmarker.png'),
+    iconSize: [38, 38],
+    iconAnchor: [22, 94],
+    popupAnchor: [-3, -76],
+    //shadowUrl: 'my-icon-shadow.png',
+    shadowSize: [68, 95],
+    shadowAnchor: [22, 94]
+});
+
+var geojsonMarkerOptions = {
+    radius: 8,
+    fillColor: "#ff7800",
+    color: "#000",
+    weight: 1,
+    opacity: 1,
+    fillOpacity: 0.8
+};
+ 
+
 const WnioskiLayer = (props) => {
   const [open, setOpen] = useState(false);
   const [feat, setFeat] = useState(undefined);
@@ -34,20 +54,28 @@ const WnioskiLayer = (props) => {
     setData(result.data);
   };
 
+  /*{<GeoJSON          
+    data={props.dane}
+    style={() => ({
+      pointToLayer: function (feature, latlng) {
+          return L.circleMarker(latlng, geojsonMarkerOptions);
+      }
+     })}
+    onEachFeature={(feature, layer) => {
+      layer.on("click", () => {
+        fetchData(feature.id);
+      });
+    }}
+  />}*/
   //console.log(props.dane);
   return (
     <React.Fragment>
       <MarkerCluserGroup>
-        <GeoJSON
-          //key={`geojson-01`}
-          style={{ color: "yellow" }}
-          data={props.dane}
-          onEachFeature={(feature, layer) => {
-            layer.on("click", () => {
-              fetchData(feature.id);
-            });
-          }}
-        />
+      {props.dane.features.map(wniosek=>(
+       <Marker key={wniosek.id} position={[wniosek.geometry.coordinates[1],wniosek.geometry.coordinates[0]]} icon={myIcon} onclick={function () {
+          alert(wniosek.id);
+        }} /> 
+      ))}  
       </MarkerCluserGroup>
       <PozwolenieInfo feat={data} />
     </React.Fragment>
