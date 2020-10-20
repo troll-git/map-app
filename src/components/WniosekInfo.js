@@ -11,15 +11,14 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     position: "absolute",
     width: 400,
-    height: 800,
     backgroundColor: theme.palette.background.paper,
     border: "2px solid #000",
-    boxShadow: theme.shadows[50],
-    padding: theme.spacing(2, 4, 5),
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
   },
 }));
 
-export default function PozwolenieInfo(props) {
+export default function WniosekInfo(props) {
   // getModalStyle is not a pure function, we roll the style only on the first render
   const [open, setOpen] = useState(props.opened);
   const [data, setData] = useState("");
@@ -57,36 +56,58 @@ export default function PozwolenieInfo(props) {
           style={{
             zIndex: 999,
             position: "absolute",
-            top: 500,
-            left: 1000,
-            width: 600,
-            height: 1200,
+            float: "right",
+            top: "15%",
+            left: "80%",
+            width: "20%",
           }}
-          disablePortal="true"
+          //disablePortal="true"
         >
           <Paper>
-            <Typography variant="subtitle2" gutterBottom>
-              {props.feat[0].imie_inwestora === null
-                ? props.feat[0].nazwa_inwestor
-                : props.feat[0].imie_inwestora +
-                  " " +
-                  props.feat[0].nazwisko_inwestora}
+            <Typography variant="h6" gutterBottom>
+              {props.feat[0].numer_ewidencyjny_system}
             </Typography>
             <Divider />
             <Typography variant="subtitle2" gutterBottom>
-              {props.feat[0].rodzaj_inwestycji}
+              {"Data wpływu wniosku do urzędu: " +
+                props.feat[0].data_wplywu_wniosku_do_urzedu}
             </Typography>
             <Typography variant="subtitle2" gutterBottom>
-              {props.feat[0].nazwa_zamierzenia_bud}
+              {"Rodzaj zamierzenia budowlanego: " +
+                props.feat[0].rodzaj_zam_budowlanego}
             </Typography>
             <Typography variant="subtitle2" gutterBottom>
-              {props.feat[0].nazwa_zam_budowlanego}
+              {"\r Nazwa zamierzenia budowlanego: " +
+                props.feat[0].nazwa_zam_budowlanego}
+            </Typography>
+
+            <Typography variant="subtitle2" gutterBottom>
+              {props.feat[0].kubatura
+                ? "Kubatura: " + props.feat[0].kubatura
+                : ""}
             </Typography>
             <Typography variant="subtitle2" gutterBottom>
-              {"Data wpływu wniosku: " +
-                props.feat[0].data_wplywu_wniosku +
-                " Data wydania decyzji " +
-                props.feat[0].data_wydania_decyzji}
+              {props.feat[0].kategoria
+                ? "Kategoria: " + props.feat[0].kategoria
+                : ""}
+            </Typography>
+            <Typography variant="subtitle2" gutterBottom>
+              {"Miejscowość: " +
+                props.feat[0].miasto +
+                " obręb ewidencyjny " +
+                props.feat[0].obreb_numer +
+                " ,numer działki: " +
+                props.feat[0].numer_dzialki}
+            </Typography>
+            <Typography variant="subtitle2" gutterBottom>
+              {props.feat[0].cecha
+                ? "Adres: " +
+                  props.feat[0].cecha +
+                  " " +
+                  props.feat[0].ulica +
+                  " " +
+                  props.feat[0].ulica_dalej
+                : ""}
             </Typography>
           </Paper>
         </Popper>

@@ -11,7 +11,7 @@ import {
 import "leaflet/dist/leaflet.css";
 import PolygonLayer from "../components/PolygonLayer";
 import PozwoleniaLayer from "../components/PozwoleniaLayer";
-import WnioskiLayer from "../components/WnioskiLayer"
+import WnioskiLayer from "../components/WnioskiLayer";
 import axios from "axios";
 import { bounds, map } from "leaflet";
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -29,9 +29,10 @@ class MapClass extends React.Component {
       dane: "",
       pozwolenia: "",
       //enabledPozwolenia:this.enabledPozwolenia,
-      wnioski:"",
+      wnioski: "",
       viewport: DEFAULT_VIEWPORT,
       bbox: "",
+      getPozwolenia: "false",
     };
   }
 
@@ -65,14 +66,10 @@ class MapClass extends React.Component {
         "," +
         this.getBoundaries(map)._northEast.lng
     );
-    //console.log(result.data);
-    //console.log("fetching data");
     this.setState({
       pozwolenia: result.data,
-      //viewport: DEFAULT_VIEWPORT,
     });
   };
-  
 
   fetchWnioski = async () => {
     const map = this.mapRef.current;
@@ -86,36 +83,32 @@ class MapClass extends React.Component {
         "," +
         this.getBoundaries(map)._northEast.lng
     );
-    //console.log(result.data);
-    //console.log("fetching data");
     this.setState({
       wnioski: result.data,
-      //viewport: DEFAULT_VIEWPORT,
     });
   };
 
-  componentDidMount(){
-    //console.log(this.props.enabledPozwolenia)
-    this.fetchPozwolenia()
-    this.fetchWnioski()
+  componentDidMount() {
+    this.fetchPozwolenia();
+    this.fetchWnioski();
   }
 
-  componentDidUpdate(prevProps){
+  componentDidUpdate(prevProps) {
     const map = this.mapRef.current;
-      
+
     if (prevProps.enabledPozwolenia !== this.props.enabledPozwolenia) {
-      if(map.viewport.zoom > 10 && this.props.enabledPozwolenia) this.fetchPozwolenia()
-      if(!this.props.enabledPozwolenia)this.setState({ pozwolenia: null });
-    }  
+      if (map.viewport.zoom > 10 && this.props.enabledPozwolenia)
+        this.fetchPozwolenia();
+      if (!this.props.enabledPozwolenia) this.setState({ pozwolenia: null });
+    }
     if (prevProps.enabledWnioski !== this.props.enabledWnioski) {
-      if(map.viewport.zoom > 10 && this.props.enabledWnioski) this.fetchWnioski()
-      if(!this.props.enabledWnioski)this.setState({ wnioski: null });
-    }     
+      if (map.viewport.zoom > 10 && this.props.enabledWnioski)
+        this.fetchWnioski();
+      if (!this.props.enabledWnioski) this.setState({ wnioski: null });
+    }
   }
-  
 
   handleClick = (viewport) => {
-    console.log(this.props.enabledPozwolenia)
     this.setState({ dane: null });
     this.setState({ pozwolenia: null });
     this.setState({ wnioski: null });
@@ -148,23 +141,23 @@ class MapClass extends React.Component {
 
   getBounds;
 
-  /*onViewportChanged = (viewport: Viewport) => {
-    this.setState({ viewport });
-  };*/
   render() {
     return (
       <Map
         id="map"
         viewport={this.state.viewport}
-        style={{ height: "800px" }}
+        style={{
+          height: "800px",
+          width: "85%",
+          position: "absolute",
+          right: "0px",
+        }}
         maxZoom={19}
         bounds={this.bbox}
         animate="true"
-        onzoomend={console.log("zoom")}
         onViewportChanged={this.handleClick}
         ref={this.mapRef}
         onclick={this.handleClick}
-        //onClick={testG}
       >
         <LayerGroup>
           <LayersControl position="topright">
@@ -200,7 +193,7 @@ class MapClass extends React.Component {
             </LayersControl.Overlay>
             {!!this.state.pozwolenia ? (
               <PozwoleniaLayer dane={this.state.pozwolenia} />
-            ) : (
+            ) : this.props.enabledPozwolenia && this.zoom > 10 ? (
               <CircularProgress
                 style={{
                   zIndex: 999,
@@ -208,10 +201,12 @@ class MapClass extends React.Component {
                   top: 500,
                 }}
               />
+            ) : (
+              <div>en</div>
             )}
             {!!this.state.wnioski ? (
               <WnioskiLayer dane={this.state.wnioski} />
-            ) : (
+            ) : this.props.enabledWnioski && this.zoom > 5 ? (
               <CircularProgress
                 style={{
                   zIndex: 999,
@@ -219,6 +214,8 @@ class MapClass extends React.Component {
                   top: 400,
                 }}
               />
+            ) : (
+              <div>fgt</div>
             )}
             {!!this.state.dane ? (
               <PolygonLayer bbox={this.getBbox} dane={this.state.dane} />

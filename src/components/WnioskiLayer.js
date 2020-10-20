@@ -3,7 +3,7 @@ import { GeoJSON, Marker, Popup } from "react-leaflet";
 import DataF from "../assets/starysacz.json";
 
 import PolygonModal from "../components/PolygonModal";
-import PozwolenieInfo from "../components/PozwolenieInfo";
+import WniosekInfo from "../components/WniosekInfo";
 import { API } from "../components/api-service";
 import axios from "axios";
 import useSWR from "swr";
@@ -48,7 +48,7 @@ const WnioskiLayer = (props) => {
 
   const fetchData = async (id) => {
     const result = await axios(
-      "http://127.0.0.1:8000/api/pozwolenie/?id=" + id
+      "http://127.0.0.1:8000/api/wniosek/?id=" + id
     );
     console.log(result.data);
     setData(result.data);
@@ -72,12 +72,10 @@ const WnioskiLayer = (props) => {
     <React.Fragment>
       <MarkerCluserGroup>
       {props.dane.features.map(wniosek=>(
-       <Marker key={wniosek.id} position={[wniosek.geometry.coordinates[1],wniosek.geometry.coordinates[0]]} icon={myIcon} onclick={function () {
-          alert(wniosek.id);
-        }} /> 
+       <Marker key={wniosek.id} position={[wniosek.geometry.coordinates[1],wniosek.geometry.coordinates[0]]} icon={myIcon} onclick={()=>{fetchData(wniosek.id)}} /> 
       ))}  
       </MarkerCluserGroup>
-      <PozwolenieInfo feat={data} />
+      <WniosekInfo feat={data} />
     </React.Fragment>
   );
 };
