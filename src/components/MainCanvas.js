@@ -20,9 +20,7 @@ const MainCanvas = (props) => {
 
   return (
     <React.Fragment>
-      <h1>
-        Mapa GUNB +{Filtry.from}+{Filtry.to}
-      </h1>
+      <h1>Mapa GUNB</h1>
 
       <FilterDrawer
         callBackPozwolenia={callBackPozwolenia}
@@ -32,6 +30,7 @@ const MainCanvas = (props) => {
       <MapClass
         enabledPozwolenia={enabledPozwolenia}
         enabledWnioski={enabledWnioski}
+        filtry={Filtry}
       />
     </React.Fragment>
   );

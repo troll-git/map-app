@@ -56,6 +56,7 @@ class MapClass extends React.Component {
 
   fetchPozwolenia = async () => {
     const map = this.mapRef.current;
+
     const result = await axios(
       "http://127.0.0.1:8000/api/pozwolenia_geom/?bbox=" +
         this.getBoundaries(map)._southWest.lat +
@@ -64,7 +65,11 @@ class MapClass extends React.Component {
         "," +
         this.getBoundaries(map)._northEast.lat +
         "," +
-        this.getBoundaries(map)._northEast.lng
+        this.getBoundaries(map)._northEast.lng +
+        "&start_date=" +
+        this.props.filtry.from +
+        "&end_date=" +
+        this.props.filtry.to
     );
     this.setState({
       pozwolenia: result.data,
@@ -96,13 +101,19 @@ class MapClass extends React.Component {
   componentDidUpdate(prevProps) {
     const map = this.mapRef.current;
 
-    if (prevProps.enabledPozwolenia !== this.props.enabledPozwolenia) {
-      if (map.viewport.zoom > 10 && this.props.enabledPozwolenia)
+    if (
+      prevProps.enabledPozwolenia !== this.props.enabledPozwolenia ||
+      prevProps.filtry !== this.props.filtry
+    ) {
+      if (map.viewport.zoom > 8 && this.props.enabledPozwolenia) {
+        this.setState({ pozwolenia: null });
         this.fetchPozwolenia();
+      }
+
       if (!this.props.enabledPozwolenia) this.setState({ pozwolenia: null });
     }
     if (prevProps.enabledWnioski !== this.props.enabledWnioski) {
-      if (map.viewport.zoom > 10 && this.props.enabledWnioski)
+      if (map.viewport.zoom > 5 && this.props.enabledWnioski)
         this.fetchWnioski();
       if (!this.props.enabledWnioski) this.setState({ wnioski: null });
     }
@@ -117,7 +128,7 @@ class MapClass extends React.Component {
       viewport.zoom > 17 ? this.fetchData() : this.setState({ dane: null });
     }
     {
-      viewport.zoom > 10 && this.props.enabledPozwolenia
+      viewport.zoom > 8 && this.props.enabledPozwolenia
         ? this.fetchPozwolenia()
         : this.setState({ pozwolenia: null });
     }
