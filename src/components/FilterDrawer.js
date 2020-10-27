@@ -31,14 +31,13 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
   },
-  appBar: {
-    width: `calc(100% - ${drawerWidth}px)`,
-    marginLeft: drawerWidth,
-  },
+
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
     color: "red",
+    position: "relative",
+    backgroundColor: "red",
   },
   drawerPaper: {
     width: drawerWidth,
@@ -97,14 +96,15 @@ const FilterDrawer = (props) => {
   return (
     <React.Fragment>
       <Drawer
-        className={classes.drawer}
+        //className={classes.drawer}
         BackdropProps={{ invisible: true }}
         variant="persistent"
         anchor="left"
         open="true"
-        classes={{
-          paper: classes.drawerPaper,
-        }}
+        position="relative"
+        //classes={{
+        //  paper: classes.drawerPaper,
+        //}}
       >
         <h2>Filtry</h2>
         <Accordion

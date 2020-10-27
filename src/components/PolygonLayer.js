@@ -43,7 +43,6 @@ const PolygonLayer = (props) => {
   return (
     <React.Fragment>
       <GeoJSON
-        //key={`geojson-01`}
         style={{ color: "blue" }}
         data={props.dane}
         onEachFeature={(feature, layer) => {
@@ -59,7 +58,6 @@ const PolygonLayer = (props) => {
             highlight(layer);
             setFeat(feature);
             setIdP(Date.now());
-            //console.log(dane.features[0].properties.powiat);
           });
         }}
       />

@@ -19,9 +19,10 @@ const FiltersPozwolenia = (props) => {
   //const classes = useStyles();
   const thisYearStart = moment().startOf("year").format("YYYY-MM-DD");
   const thisYearNow = moment().format("YYYY-MM-DD");
-  const [dateOption, setDateOption] = useState("allYear");
-  const [dateFrom, setDateFrom] = useState("");
-  const [dateTo, setDateTo] = useState("");
+  const monthAgo = moment().add(-30, "days").format("YYYY-MM-DD");
+  const [dateOption, setDateOption] = useState("lastMonth");
+  const [dateFrom, setDateFrom] = useState(monthAgo);
+  const [dateTo, setDateTo] = useState(thisYearNow);
   const [calendarDisabled, setCalendarDisabled] = useState(true);
 
   useEffect(() => {
@@ -32,7 +33,14 @@ const FiltersPozwolenia = (props) => {
     if (event.target.value === "customdate") {
       setDateOption(event.target.value);
       setCalendarDisabled(false);
-      //console.log(document.getElementById("dateFrom").value);
+    }
+    if (event.target.value === "lastMonth") {
+      setCalendarDisabled(true);
+      setDateOption(event.target.value);
+      setDateFrom(monthAgo);
+      console.log(monthAgo);
+      setDateTo(thisYearNow);
+      props.update([monthAgo, thisYearNow]);
     }
     if (event.target.value === "thisYear") {
       setCalendarDisabled(true);
@@ -52,7 +60,9 @@ const FiltersPozwolenia = (props) => {
 
   return (
     <FormControl component="fieldset">
-      <FormLabel component="legend">Data wydania wniosku</FormLabel>
+      <FormLabel component="legend">
+        Data wydania pozwolenia na budowę
+      </FormLabel>
       <RadioGroup
         aria-label="rokwydaniawniosku"
         name="rokwniosku"
@@ -60,14 +70,19 @@ const FiltersPozwolenia = (props) => {
         onChange={handleChangeDatePozwolenia}
       >
         <FormControlLabel
-          value="allYear"
+          value="lastMonth"
           control={<Radio />}
-          label="wszystkie lata"
+          label="Ostatni miesiąc"
         />
         <FormControlLabel
           value="thisYear"
           control={<Radio />}
           label="Bieżący rok"
+        />
+        <FormControlLabel
+          value="allYear"
+          control={<Radio />}
+          label="wszystkie lata"
         />
         <FormControlLabel
           value="customdate"

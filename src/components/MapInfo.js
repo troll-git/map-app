@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import { Popper } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 
-function getModalStyle() {
-  const top = 1;
+/*function getModalStyle() {
+  const top = 1000;
   const right = 1;
 
   return {
@@ -13,18 +13,19 @@ function getModalStyle() {
     right: `${right}%`,
     transform: `translate(-${top}%, -${right}%)`,
   };
-}
+}*/
 
-const useStyles = makeStyles((theme) => ({
+/*const useStyles = makeStyles((theme) => ({
   paper: {
-    position: "absolute",
-    width: 400,
+    position: "fixed",
+    bottom: "5px",
+    width: 800,
     backgroundColor: theme.palette.background.paper,
     border: "2px solid #000",
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
   },
-}));
+}));*/
 
 export default function MapInfo(props) {
   // getModalStyle is not a pure function, we roll the style only on the first render

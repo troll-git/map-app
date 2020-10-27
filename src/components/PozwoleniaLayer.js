@@ -13,6 +13,14 @@ import "react-leaflet-markercluster/dist/styles.min.css";
 
 delete L.Icon.Default.prototype._getIconUrl;
 
+const createClusterCustomIcon = function (cluster) {
+  return L.divIcon({
+    html: <span>\${cluster.getChildCount()}</span>,
+    className: "marker-cluster-custom",
+    iconSize: L.point(40, 40, true),
+  });
+};
+
 L.Icon.Default.mergeOptions({
   iconRetinaUtl: require("leaflet/dist/images/marker-icon-2x.png"),
   iconUrl: require("leaflet/dist/images/marker-icon.png"),
@@ -34,12 +42,22 @@ const PozwoleniaLayer = (props) => {
     setData(result.data);
   };
 
-  //console.log(props.dane);
+  const createClusterCustomIcon = function (cluster) {
+    return L.divIcon({
+      html: `<span>${cluster.getChildCount()}</span>`,
+      className: "marker-cluster-pozwolenia",
+      iconSize: L.point(40, 40, true),
+      color: "red",
+    });
+  };
+
   return (
     <React.Fragment>
-      <MarkerCluserGroup>
+      <MarkerCluserGroup
+        spiderfyDistanceMultiplier={2}
+        iconCreateFunction={createClusterCustomIcon}
+      >
         <GeoJSON
-          //key={`geojson-01`}
           style={{ color: "red" }}
           data={props.dane}
           onEachFeature={(feature, layer) => {

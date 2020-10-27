@@ -20,8 +20,6 @@ const MainCanvas = (props) => {
 
   return (
     <React.Fragment>
-      <h1>Mapa GUNB</h1>
-
       <FilterDrawer
         callBackPozwolenia={callBackPozwolenia}
         callBackWnioski={callBackWnioski}

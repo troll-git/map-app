@@ -20,24 +20,23 @@ import "react-leaflet-markercluster/dist/styles.min.css";
 //});
 
 var myIcon = L.icon({
-    iconUrl: require('../assets/redmarker.png'),
-    iconSize: [38, 38],
-    iconAnchor: [22, 94],
-    popupAnchor: [-3, -76],
-    //shadowUrl: 'my-icon-shadow.png',
-    shadowSize: [68, 95],
-    shadowAnchor: [22, 94]
+  iconUrl: require("../assets/redmarker.png"),
+  iconSize: [38, 38],
+  iconAnchor: [22, 94],
+  popupAnchor: [-3, -76],
+  //shadowUrl: 'my-icon-shadow.png',
+  shadowSize: [68, 95],
+  shadowAnchor: [22, 94],
 });
 
 var geojsonMarkerOptions = {
-    radius: 8,
-    fillColor: "#ff7800",
-    color: "#000",
-    weight: 1,
-    opacity: 1,
-    fillOpacity: 0.8
+  radius: 8,
+  fillColor: "#ff7800",
+  color: "#000",
+  weight: 1,
+  opacity: 1,
+  fillOpacity: 0.8,
 };
- 
 
 const WnioskiLayer = (props) => {
   const [open, setOpen] = useState(false);
@@ -47,9 +46,7 @@ const WnioskiLayer = (props) => {
   const [data, setData] = useState(undefined);
 
   const fetchData = async (id) => {
-    const result = await axios(
-      "http://127.0.0.1:8000/api/wniosek/?id=" + id
-    );
+    const result = await axios("http://127.0.0.1:8000/api/wniosek/?id=" + id);
     console.log(result.data);
     setData(result.data);
   };
@@ -68,12 +65,34 @@ const WnioskiLayer = (props) => {
     }}
   />}*/
   //console.log(props.dane);
+  const createClusterCustomIcon = function (cluster) {
+    return L.divIcon({
+      html: `<span>${cluster.getChildCount()}</span>`,
+      className: "marker-cluster-wnioski",
+      iconSize: L.point(40, 40, true),
+      color: "red",
+    });
+  };
+
   return (
     <React.Fragment>
-      <MarkerCluserGroup>
-      {props.dane.features.map(wniosek=>(
-       <Marker key={wniosek.id} position={[wniosek.geometry.coordinates[1],wniosek.geometry.coordinates[0]]} icon={myIcon} onclick={()=>{fetchData(wniosek.id)}} /> 
-      ))}  
+      <MarkerCluserGroup
+        spiderfyDistanceMultiplier={2}
+        iconCreateFunction={createClusterCustomIcon}
+      >
+        {props.dane.features.map((wniosek) => (
+          <Marker
+            key={wniosek.id}
+            position={[
+              wniosek.geometry.coordinates[1],
+              wniosek.geometry.coordinates[0],
+            ]}
+            icon={myIcon}
+            onclick={() => {
+              fetchData(wniosek.id);
+            }}
+          />
+        ))}
       </MarkerCluserGroup>
       <WniosekInfo feat={data} />
     </React.Fragment>

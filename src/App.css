@@ -44,3 +44,25 @@
   right: 0px !important;
   display: block !important;
 }
+
+.marker-cluster-wnioski {
+  background: #e74c3c;
+  border: 3px solid #ededed;
+  border-radius: 50%;
+  color: #ededed;
+  height: 40px;
+  line-height: 37px;
+  text-align: center;
+  width: 40px;
+}
+
+.marker-cluster-pozwolenia {
+  background: #2981ca;
+  border: 3px solid #ededed;
+  border-radius: 50%;
+  color: #ededed;
+  height: 40px;
+  line-height: 37px;
+  text-align: center;
+  width: 40px;
+}

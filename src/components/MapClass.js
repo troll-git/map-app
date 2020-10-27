@@ -18,7 +18,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 
 const DEFAULT_VIEWPORT = {
   center: [49.55813806107707, 20.633729696273807],
-  zoom: 12,
+  zoom: 20,
 };
 
 class MapClass extends React.Component {
@@ -213,7 +213,7 @@ class MapClass extends React.Component {
                 }}
               />
             ) : (
-              <div>en</div>
+              <div></div>
             )}
             {!!this.state.wnioski ? (
               <WnioskiLayer dane={this.state.wnioski} />
@@ -226,12 +226,12 @@ class MapClass extends React.Component {
                 }}
               />
             ) : (
-              <div>fgt</div>
+              <div></div>
             )}
             {!!this.state.dane ? (
               <PolygonLayer bbox={this.getBbox} dane={this.state.dane} />
             ) : (
-              <p>dfd</p>
+              <p></p>
             )}
           </LayersControl>
         </LayerGroup>
