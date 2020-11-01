@@ -14,6 +14,7 @@
     "mapbox-gl": "^1.12.0",
     "moment": "^2.29.1",
     "react": "^16.13.1",
+    "react-container-dimensions": "^1.4.1",
     "react-dom": "^16.13.1",
     "react-leaflet": "^2.7.0",
     "react-leaflet-markercluster": "^2.0.0",

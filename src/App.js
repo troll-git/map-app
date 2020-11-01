@@ -5,7 +5,7 @@ import MapCanvas from "./components/MapLeaflet";
 import MapLeaflet from "./components/MapLeaflet";
 import MapClass from "./components/MapClass";
 import MapMapBox from "./components/MapMapbox";
-import TestC from "./components/testcomponent";
+import Home from "./components/Home";
 import MainCanvas from "./components/MainCanvas";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import AppBar from "@material-ui/core/AppBar";
@@ -50,7 +50,7 @@ function App() {
               <MainCanvas />
             </Route>
             <Route path="/">
-              <h1>home</h1>
+              <Home />
             </Route>
           </Switch>
         </div>

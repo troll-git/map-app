@@ -71,6 +71,7 @@ class MapClass extends React.Component {
         "&end_date=" +
         this.props.filtry.to
     );
+    console.log(result.data);
     this.setState({
       pozwolenia: result.data,
     });
@@ -154,88 +155,91 @@ class MapClass extends React.Component {
 
   render() {
     return (
-      <Map
-        id="map"
-        viewport={this.state.viewport}
-        style={{
-          height: "800px",
-          width: "85%",
-          position: "absolute",
-          right: "0px",
-        }}
-        maxZoom={19}
-        bounds={this.bbox}
-        animate="true"
-        onViewportChanged={this.handleClick}
-        ref={this.mapRef}
-        onclick={this.handleClick}
-      >
-        <LayerGroup>
-          <LayersControl position="topright">
-            <LayersControl.BaseLayer name="osm" checked={true}>
-              <TileLayer
-                attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              />
-            </LayersControl.BaseLayer>
-            <LayersControl.BaseLayer name="esraj">
-              <TileLayer
-                attribution='Tiles © <a href="https://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer">ArcGIS</a>'
-                url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}"
-              />
-            </LayersControl.BaseLayer>
-            <LayersControl.Overlay name="orto">
-              <WMSTileLayer
-                url="http://159.65.197.227:8080/geoserver/cite/wms?"
-                layers="stary"
-                transparent={true}
-                format="image/png"
-                opacity={0.8}
-              />
-            </LayersControl.Overlay>
-            <LayersControl.Overlay name="orto2">
-              <WMSTileLayer
-                url="http://mapy.geoportal.gov.pl/wss/service/img/guest/ORTO/MapServer/WMSServer?"
-                layers="Raster"
-                transparent={true}
-                format="image/png"
-                opacity={0.8}
-              />
-            </LayersControl.Overlay>
-            {!!this.state.pozwolenia ? (
-              <PozwoleniaLayer dane={this.state.pozwolenia} />
-            ) : this.props.enabledPozwolenia && this.zoom > 10 ? (
-              <CircularProgress
-                style={{
-                  zIndex: 999,
-                  position: "absolute",
-                  top: 500,
-                }}
-              />
-            ) : (
-              <div></div>
-            )}
-            {!!this.state.wnioski ? (
-              <WnioskiLayer dane={this.state.wnioski} />
-            ) : this.props.enabledWnioski && this.zoom > 5 ? (
-              <CircularProgress
-                style={{
-                  zIndex: 999,
-                  position: "absolute",
-                  top: 400,
-                }}
-              />
-            ) : (
-              <div></div>
-            )}
-            {!!this.state.dane ? (
-              <PolygonLayer bbox={this.getBbox} dane={this.state.dane} />
-            ) : (
-              <p></p>
-            )}
-          </LayersControl>
-        </LayerGroup>
-      </Map>
+      <React.Fragment>
+        <p>{this.props.width}</p>
+        <Map
+          id="map"
+          viewport={this.state.viewport}
+          style={{
+            height: "800px",
+            width: this.props.width,
+            position: "absolute",
+            right: "0px",
+          }}
+          maxZoom={19}
+          bounds={this.bbox}
+          animate="true"
+          onViewportChanged={this.handleClick}
+          ref={this.mapRef}
+          onclick={this.handleClick}
+        >
+          <LayerGroup>
+            <LayersControl position="topright">
+              <LayersControl.BaseLayer name="osm" checked={true}>
+                <TileLayer
+                  attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
+              </LayersControl.BaseLayer>
+              <LayersControl.BaseLayer name="esraj">
+                <TileLayer
+                  attribution='Tiles © <a href="https://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer">ArcGIS</a>'
+                  url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}"
+                />
+              </LayersControl.BaseLayer>
+              <LayersControl.Overlay name="orto">
+                <WMSTileLayer
+                  url="http://159.65.197.227:8080/geoserver/cite/wms?"
+                  layers="stary"
+                  transparent={true}
+                  format="image/png"
+                  opacity={0.8}
+                />
+              </LayersControl.Overlay>
+              <LayersControl.Overlay name="orto2">
+                <WMSTileLayer
+                  url="http://mapy.geoportal.gov.pl/wss/service/img/guest/ORTO/MapServer/WMSServer?"
+                  layers="Raster"
+                  transparent={true}
+                  format="image/png"
+                  opacity={0.8}
+                />
+              </LayersControl.Overlay>
+              {!!this.state.pozwolenia ? (
+                <PozwoleniaLayer dane={this.state.pozwolenia} />
+              ) : this.props.enabledPozwolenia && this.zoom > 10 ? (
+                <CircularProgress
+                  style={{
+                    zIndex: 999,
+                    position: "absolute",
+                    top: 500,
+                  }}
+                />
+              ) : (
+                <div></div>
+              )}
+              {!!this.state.wnioski ? (
+                <WnioskiLayer dane={this.state.wnioski} />
+              ) : this.props.enabledWnioski && this.zoom > 5 ? (
+                <CircularProgress
+                  style={{
+                    zIndex: 999,
+                    position: "absolute",
+                    top: 400,
+                  }}
+                />
+              ) : (
+                <div></div>
+              )}
+              {!!this.state.dane ? (
+                <PolygonLayer bbox={this.getBbox} dane={this.state.dane} />
+              ) : (
+                <p></p>
+              )}
+            </LayersControl>
+          </LayerGroup>
+        </Map>
+      </React.Fragment>
     );
   }
 }

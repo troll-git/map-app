@@ -25,29 +25,17 @@ import React, { useState, useEffect } from "react";
 import moment from "moment";
 import FiltersPozwolenia from "../components/FiltersPozwolenia";
 
-const drawerWidth = "15%";
+const drawerWidth = "10%";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
   },
-
   drawer: {
-    width: drawerWidth,
-    flexShrink: 0,
-    color: "red",
-    position: "relative",
-    backgroundColor: "red",
-  },
-  drawerPaper: {
-    width: drawerWidth,
-  },
-  // necessary for content to be below app bar
-  toolbar: theme.mixins.toolbar,
-  content: {
-    flexGrow: 1,
-    backgroundColor: theme.palette.background.default,
-    padding: theme.spacing(3),
+    [theme.breakpoints.up("sm")]: {
+      width: drawerWidth,
+      flexShrink: 0,
+    },
   },
 }));
 
@@ -94,17 +82,13 @@ const FilterDrawer = (props) => {
   };
 
   return (
-    <React.Fragment>
+    <div className={classes.root}>
       <Drawer
-        //className={classes.drawer}
-        BackdropProps={{ invisible: true }}
-        variant="persistent"
+        className={classes.drawer}
+        //BackdropProps={{ invisible: true }}
+        variant="permanent"
         anchor="left"
-        open="true"
-        position="relative"
-        //classes={{
-        //  paper: classes.drawerPaper,
-        //}}
+        open="false"
       >
         <h2>Filtry</h2>
         <Accordion
@@ -158,7 +142,7 @@ const FilterDrawer = (props) => {
           </AccordionDetails>
         </Accordion>
       </Drawer>
-    </React.Fragment>
+    </div>
   );
 };
 
