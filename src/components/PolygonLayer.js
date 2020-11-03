@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { GeoJSON } from "react-leaflet";
+import { GeoJSON, Tooltip } from "react-leaflet";
 import DataF from "../assets/starysacz.json";
 
 import PolygonModal from "../components/PolygonModal";
@@ -57,12 +57,18 @@ const PolygonLayer = (props) => {
           layer.on("mouseover", () => {
             highlight(layer);
             setFeat(feature);
+            props.callBackFeat(feature);
             setIdP(Date.now());
           });
         }}
-      />
+      >
+        {" "}
+        <Tooltip sticky>
+          <MapInfo feat={feat} />
+        </Tooltip>
+      </GeoJSON>
+
       <PolygonModal opened={open} feat={feat} id={id} />
-      <MapInfo feat={feat} id={idP} />
     </React.Fragment>
   );
 };

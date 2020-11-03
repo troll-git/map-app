@@ -15,22 +15,25 @@ import Typography from "@material-ui/core/Typography";
   };
 }*/
 
-/*const useStyles = makeStyles((theme) => ({
-  paper: {
+const useStyles = makeStyles((theme) => ({
+  papers: {
     position: "fixed",
-    bottom: "5px",
-    width: 800,
+    width: 400,
+    height: 20,
+    left: 900,
     backgroundColor: theme.palette.background.paper,
     border: "2px solid #000",
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
+    boxShadow: theme.shadows[50],
+    padding: theme.spacing(2, 4, 5),
+    zIndex: 999,
   },
-}));*/
+}));
 
 export default function MapInfo(props) {
   // getModalStyle is not a pure function, we roll the style only on the first render
   const [open, setOpen] = useState(props.opened);
   const [data, setData] = useState("");
+  const classes = useStyles();
 
   useEffect(() => {
     setOpen(props.opened);
@@ -44,37 +47,36 @@ export default function MapInfo(props) {
     if (!!props.feat) {
       const dat = Object.values(props.feat.properties).map((e) => e);
       setData(dat);
-    } else {
-      console.log("ss");
     }
+    //else {
+    //  console.log("ss");
+    // }
   };
 
   return (
     <div>
-      <Popper open="true" onClose={handleClose}>
-        <Typography variant="subtitle2" gutterBottom>
-          Numer działki: {data[4]}
-        </Typography>
-        <Typography variant="subtitle2" gutterBottom>
-          {data === ""
-            ? ""
-            : "Województwo: " +
-              data[5] +
-              " powiat: " +
-              data[6] +
-              " gmina: " +
-              data[7]}
-        </Typography>
-        <Typography variant="subtitle2" gutterBottom>
-          {data === ""
-            ? ""
-            : "Obwód działki [m]: " +
-              data[9].toFixed(2) +
-              " Powierzchnia działki [ar]: " +
-              (data[10] / 100).toFixed(2) +
-              "."}
-        </Typography>
-      </Popper>
+      <Typography variant="subtitle2" gutterBottom>
+        Numer działki: {data[4]}
+      </Typography>
+      <Typography variant="subtitle2" gutterBottom>
+        {data === ""
+          ? ""
+          : "Województwo: " +
+            data[5] +
+            " powiat: " +
+            data[6] +
+            " gmina: " +
+            data[7]}
+      </Typography>
+      <Typography variant="subtitle2" gutterBottom>
+        {data === ""
+          ? ""
+          : "Obwód działki [m]: " +
+            data[9].toFixed(2) +
+            " Powierzchnia działki [ar]: " +
+            (data[10] / 100).toFixed(2) +
+            "."}
+      </Typography>
     </div>
   );
 }

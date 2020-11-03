@@ -111,7 +111,7 @@ const FilterDrawer = (props) => {
                   checked={checkedPozwolenia}
                 />
               }
-              label="Pozwolenia"
+              label="Decyzje"
             />
           </AccordionSummary>
           <AccordionDetails>
@@ -134,7 +134,7 @@ const FilterDrawer = (props) => {
                   checked={checkedWnioski}
                 />
               }
-              label="Wnioski"
+              label="Zgłoszenia"
             />
           </AccordionSummary>
           <AccordionDetails>

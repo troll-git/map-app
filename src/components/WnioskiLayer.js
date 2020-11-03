@@ -94,7 +94,7 @@ const WnioskiLayer = (props) => {
           />
         ))}
       </MarkerCluserGroup>
-      <WniosekInfo feat={data} />
+      <WniosekInfo feat={data} open={open} />
     </React.Fragment>
   );
 };

@@ -15,10 +15,11 @@ import WnioskiLayer from "../components/WnioskiLayer";
 import axios from "axios";
 import { bounds, map } from "leaflet";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import MapInfo from "../components/MapInfo";
 
 const DEFAULT_VIEWPORT = {
   center: [49.55813806107707, 20.633729696273807],
-  zoom: 20,
+  zoom: 10,
 };
 
 class MapClass extends React.Component {
@@ -33,6 +34,7 @@ class MapClass extends React.Component {
       viewport: DEFAULT_VIEWPORT,
       bbox: "",
       getPozwolenia: "false",
+      feat: "",
     };
   }
 
@@ -71,7 +73,6 @@ class MapClass extends React.Component {
         "&end_date=" +
         this.props.filtry.to
     );
-    console.log(result.data);
     this.setState({
       pozwolenia: result.data,
     });
@@ -151,12 +152,14 @@ class MapClass extends React.Component {
     map.leafletElement.fitBounds(bbox);
   };
 
+  callBackFeat = (dataFromChild) => {
+    this.setState({ feat: dataFromChild });
+  };
   getBounds;
 
   render() {
     return (
       <React.Fragment>
-        <p>{this.props.width}</p>
         <Map
           id="map"
           viewport={this.state.viewport}
@@ -232,7 +235,11 @@ class MapClass extends React.Component {
                 <div></div>
               )}
               {!!this.state.dane ? (
-                <PolygonLayer bbox={this.getBbox} dane={this.state.dane} />
+                <PolygonLayer
+                  bbox={this.getBbox}
+                  dane={this.state.dane}
+                  callBackFeat={this.callBackFeat}
+                />
               ) : (
                 <p></p>
               )}

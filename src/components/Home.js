@@ -11,6 +11,7 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
+import Skeleton from "@material-ui/lab/Skeleton";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -117,7 +118,10 @@ const Home = (props) => {
                 </TableContainer>
               </div>
             ) : (
-              <p>0</p>
+              <div>
+                <Skeleton variant="text" height={30} />
+                <Skeleton variant="rect" height={300} />
+              </div>
             )}
           </Grid>
           <Grid item className={classes.paper} xs={6}>
@@ -134,7 +138,7 @@ const Home = (props) => {
                       <TableRow>
                         <TableCell>Dane</TableCell>
                         <TableCell>Nowe rekordy</TableCell>
-                        <TableCell>Istniejące rekordy</TableCell>
+                        <TableCell>Pominięte rekordy</TableCell>
                         <TableCell>Nieudane importy</TableCell>
                       </TableRow>
                     </TableHead>
@@ -180,7 +184,10 @@ const Home = (props) => {
                 </TableContainer>
               </div>
             ) : (
-              <p>0</p>
+              <div>
+                <Skeleton variant="text" height={30} />
+                <Skeleton variant="rect" height={300} />
+              </div>
             )}
           </Grid>
         </Grid>

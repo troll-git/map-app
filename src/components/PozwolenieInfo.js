@@ -6,6 +6,12 @@ import Typography from "@material-ui/core/Typography";
 import axios from "axios";
 import zIndex from "@material-ui/core/styles/zIndex";
 import { Popup } from "react-leaflet";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableContainer from "@material-ui/core/TableContainer";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -17,12 +23,16 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: theme.shadows[50],
     padding: theme.spacing(2, 4, 5),
   },
+  decyzjePanel: {
+    backgroundColor: "#2981CA",
+  },
 }));
 
 export default function PozwolenieInfo(props) {
   // getModalStyle is not a pure function, we roll the style only on the first render
   const [open, setOpen] = useState(props.opened);
-  const [data, setData] = useState("");
+  const [data, setData] = useState();
+  const classes = useStyles();
 
   useEffect(() => {
     //setOpen(props.opened);
@@ -47,47 +57,107 @@ export default function PozwolenieInfo(props) {
         <Popper
           open="true"
           onClose={handleClose}
-          //popperOptions={{ positionFixed: true }}
-          //modifiers={{
-          //  offset: {
-          //     enabled: true,
-          //    offset: "500, 300",
-          //  },
-          //}}
           style={{
             zIndex: 999,
             position: "absolute",
-            top: 500,
-            left: 1000,
+            top: 50,
+            left: 900,
             width: 600,
-            height: 1200,
+            height: 1600,
           }}
           disablePortal="true"
         >
           <Paper>
-            <Typography variant="subtitle2" gutterBottom>
-              {props.feat[0].imie_inwestora === null
-                ? props.feat[0].nazwa_inwestor
-                : props.feat[0].imie_inwestora +
-                  " " +
-                  props.feat[0].nazwisko_inwestora}
-            </Typography>
-            <Divider />
-            <Typography variant="subtitle2" gutterBottom>
-              {props.feat[0].rodzaj_inwestycji}
-            </Typography>
-            <Typography variant="subtitle2" gutterBottom>
-              {props.feat[0].nazwa_zamierzenia_bud}
-            </Typography>
-            <Typography variant="subtitle2" gutterBottom>
-              {props.feat[0].nazwa_zam_budowlanego}
-            </Typography>
-            <Typography variant="subtitle2" gutterBottom>
-              {"Data wpływu wniosku: " +
-                props.feat[0].data_wplywu_wniosku +
-                " Data wydania decyzji " +
-                props.feat[0].data_wydania_decyzji}
-            </Typography>
+            <h2 className={classes.decyzjePanel}>DECYZJE</h2>
+            <TableContainer component={Paper}>
+              <Table
+                //className={classes.table}
+                size="large"
+                aria-label="stan aktualny"
+              >
+                <TableBody>
+                  <TableRow>
+                    <TableCell>Numer działki</TableCell>
+                    <TableCell>{props.feat[0].identyfikator}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>Inwestor</TableCell>
+                    <TableCell>
+                      {props.feat[0].imie_inwestora === null
+                        ? props.feat[0].nazwa_inwestor
+                        : props.feat[0].imie_inwestora +
+                          " " +
+                          props.feat[0].nazwisko_inwestora}
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>Adres</TableCell>
+                    <TableCell>
+                      {props.feat[0].ulica
+                        ? "ul. " + props.feat[0].ulica + ", "
+                        : ""}
+                      {props.feat[0].ulica_dalej
+                        ? props.feat[0].ulica_dalej + ", "
+                        : ""}
+                      {props.feat[0].miasto}
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>Rodzaj inwestycji</TableCell>
+                    <TableCell>{props.feat[0].rodzaj_inwestycji}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>Kategoria</TableCell>
+                    <TableCell>{props.feat[0].kategoria}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>Zamierzenie budowlane</TableCell>
+                    <TableCell>
+                      {props.feat[0].nazwa_zamierzenia_bud + ". "}
+                      {props.feat[0].nazwa_zam_budowlanego}
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>Kubatura</TableCell>
+                    <TableCell>
+                      {props.feat[0].kubatura
+                        ? props.feat[0].kubatura
+                        : "nie podano"}
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>Data wpływu wniosku / wydania decyzji</TableCell>
+                    <TableCell>
+                      {props.feat[0].data_wplywu_wniosku +
+                        " / " +
+                        props.feat[0].data_wydania_decyzji}
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>Numer decyzji</TableCell>
+                    <TableCell>{props.feat[0].numer_decyzji_urzedu}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>Organ</TableCell>
+                    <TableCell>
+                      {props.feat[0].nazwa_organu +
+                        ", nr urząd: " +
+                        props.feat[0].numer_urzad}
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>Projektant</TableCell>
+                    <TableCell>
+                      {props.feat[0].projektant_imie +
+                        " " +
+                        props.feat[0].projektant_nazwisko +
+                        ", nr.upr: " +
+                        props.feat[0].projektant_numer_uprawnien}
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </TableContainer>
           </Paper>
         </Popper>
       ) : (
