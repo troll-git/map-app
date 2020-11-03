@@ -4,6 +4,8 @@ import DataF from "../assets/starysacz.json";
 
 import PolygonModal from "../components/PolygonModal";
 import PozwolenieInfo from "../components/PozwolenieInfo";
+import LayerInfo from "../components/LayerInfo";
+
 import { API } from "../components/api-service";
 import axios from "axios";
 import useSWR from "swr";
@@ -67,7 +69,7 @@ const PozwoleniaLayer = (props) => {
           }}
         />
       </MarkerCluserGroup>
-      <PozwolenieInfo feat={data} />
+      <LayerInfo feat={data} type={"pozwolenie_info"} />
     </React.Fragment>
   );
 };

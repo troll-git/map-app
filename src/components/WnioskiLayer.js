@@ -4,6 +4,7 @@ import DataF from "../assets/starysacz.json";
 
 import PolygonModal from "../components/PolygonModal";
 import WniosekInfo from "../components/WniosekInfo";
+import LayerInfo from "../components/LayerInfo";
 import { API } from "../components/api-service";
 import axios from "axios";
 import useSWR from "swr";
@@ -94,7 +95,7 @@ const WnioskiLayer = (props) => {
           />
         ))}
       </MarkerCluserGroup>
-      <WniosekInfo feat={data} open={open} />
+      <LayerInfo feat={data} type={"wniosek_info"} />
     </React.Fragment>
   );
 };
