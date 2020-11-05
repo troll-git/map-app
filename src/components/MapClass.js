@@ -71,7 +71,11 @@ class MapClass extends React.Component {
         "&start_date=" +
         this.props.filtry.from +
         "&end_date=" +
-        this.props.filtry.to
+        this.props.filtry.to +
+        "&category=" +
+        this.props.filtry.category +
+        "&investor=" +
+        this.props.filtry.investor
     );
     this.setState({
       pozwolenia: result.data,
@@ -88,7 +92,13 @@ class MapClass extends React.Component {
         "," +
         this.getBoundaries(map)._northEast.lat +
         "," +
-        this.getBoundaries(map)._northEast.lng
+        this.getBoundaries(map)._northEast.lng +
+        "&start_date=" +
+        this.props.filtryWnioski.from +
+        "&end_date=" +
+        this.props.filtryWnioski.to +
+        "&category=" +
+        this.props.filtryWnioski.category
     );
     this.setState({
       wnioski: result.data,
@@ -107,14 +117,17 @@ class MapClass extends React.Component {
       prevProps.enabledPozwolenia !== this.props.enabledPozwolenia ||
       prevProps.filtry !== this.props.filtry
     ) {
-      if (map.viewport.zoom > 8 && this.props.enabledPozwolenia) {
+      if (map.viewport.zoom > 5 && this.props.enabledPozwolenia) {
         this.setState({ pozwolenia: null });
         this.fetchPozwolenia();
       }
 
       if (!this.props.enabledPozwolenia) this.setState({ pozwolenia: null });
     }
-    if (prevProps.enabledWnioski !== this.props.enabledWnioski) {
+    if (
+      prevProps.enabledWnioski !== this.props.enabledWnioski ||
+      prevProps.filtryWnioski !== this.props.filtryWnioski
+    ) {
       if (map.viewport.zoom > 5 && this.props.enabledWnioski)
         this.fetchWnioski();
       if (!this.props.enabledWnioski) this.setState({ wnioski: null });
@@ -130,7 +143,7 @@ class MapClass extends React.Component {
       viewport.zoom > 17 ? this.fetchData() : this.setState({ dane: null });
     }
     {
-      viewport.zoom > 8 && this.props.enabledPozwolenia
+      viewport.zoom > 5 && this.props.enabledPozwolenia
         ? this.fetchPozwolenia()
         : this.setState({ pozwolenia: null });
     }
@@ -164,7 +177,7 @@ class MapClass extends React.Component {
           id="map"
           viewport={this.state.viewport}
           style={{
-            height: "800px",
+            height: "900px",
             width: this.props.width,
             position: "absolute",
             right: "0px",

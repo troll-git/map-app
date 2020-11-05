@@ -13,6 +13,7 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import { ClickAwayListener } from "@material-ui/core";
+import KategoriaPopup from "../utils/KategoriaPopup";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -37,19 +38,11 @@ export default function PozwolenieInfo(props) {
 
   useEffect(() => {
     setOpen(props.open);
-    handleData();
   }, [props]);
 
   const handleClose = () => {
     setOpen(false);
     setData(props.feat[0]);
-  };
-
-  const handleData = () => {
-    if (!!props.feat) {
-      console.log(props.feat[0].imie_inwestora);
-      //fetchData();
-    }
   };
 
   return (
@@ -66,16 +59,18 @@ export default function PozwolenieInfo(props) {
               left: 900,
               width: 600,
               height: 1600,
+              overflow: "auto",
             }}
             disablePortal="true"
           >
             <Paper>
-              <h2 className={classes.decyzjePanel}>DECYZJE</h2>
+              <h2 className={classes.decyzjePanel}>DECYZJA</h2>
               <TableContainer component={Paper}>
                 <Table
                   //className={classes.table}
                   size="large"
                   aria-label="stan aktualny"
+                  overflow="auto"
                 >
                   <TableBody>
                     <TableRow>
@@ -110,7 +105,10 @@ export default function PozwolenieInfo(props) {
                     </TableRow>
                     <TableRow>
                       <TableCell>Kategoria</TableCell>
-                      <TableCell>{props.feat[0].kategoria}</TableCell>
+                      <TableCell>
+                        {" "}
+                        <KategoriaPopup kat={props.feat[0].kategoria} />
+                      </TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell>Zamierzenie budowlane</TableCell>

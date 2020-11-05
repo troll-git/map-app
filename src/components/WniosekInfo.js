@@ -13,6 +13,7 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import { ClickAwayListener } from "@material-ui/core";
+import KategoriaPopup from "../utils/KategoriaPopup";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -70,7 +71,7 @@ export default function WniosekInfo(props) {
             disablePortal="true"
           >
             <Paper>
-              <h2 className={classes.wnioskiPanel}>ZGŁOSZENIA</h2>
+              <h2 className={classes.wnioskiPanel}>ZGŁOSZENIE</h2>
               <TableContainer component={Paper}>
                 <Table
                   //className={classes.table}
@@ -111,7 +112,9 @@ export default function WniosekInfo(props) {
                     </TableRow>
                     <TableRow>
                       <TableCell>Kategoria</TableCell>
-                      <TableCell>{props.feat[0].kategoria}</TableCell>
+                      <TableCell>
+                        <KategoriaPopup kat={props.feat[0].kategoria} />
+                      </TableCell>
                     </TableRow>
 
                     <TableRow>

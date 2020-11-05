@@ -1,13 +1,7 @@
 import {
-  Divider,
-  Drawer,
   FormControlLabel,
   FormControl,
   FormLabel,
-  Switch,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
   Radio,
   RadioGroup,
   TextField,
@@ -15,7 +9,7 @@ import {
 import React, { useEffect, useState } from "react";
 import moment from "moment";
 
-const FiltersPozwolenia = (props) => {
+const FiltersDate = (props) => {
   //const classes = useStyles();
   const thisYearStart = moment().startOf("year").format("YYYY-MM-DD");
   const thisYearNow = moment().format("YYYY-MM-DD");
@@ -29,7 +23,7 @@ const FiltersPozwolenia = (props) => {
     props.update([dateFrom, dateTo]);
   }, []);
 
-  const handleChangeDatePozwolenia = (event) => {
+  const handleChangeDate = (event) => {
     if (event.target.value === "customdate") {
       setDateOption(event.target.value);
       setCalendarDisabled(false);
@@ -60,14 +54,12 @@ const FiltersPozwolenia = (props) => {
 
   return (
     <FormControl component="fieldset">
-      <FormLabel component="legend">
-        Data wydania pozwolenia na budowę
-      </FormLabel>
+      <FormLabel component="legend">{props.title}</FormLabel>
       <RadioGroup
         aria-label="rokwydaniawniosku"
         name="rokwniosku"
         value={dateOption}
-        onChange={handleChangeDatePozwolenia}
+        onChange={handleChangeDate}
       >
         <FormControlLabel
           value="lastMonth"
@@ -130,4 +122,4 @@ const FiltersPozwolenia = (props) => {
   );
 };
 
-export default FiltersPozwolenia;
+export default FiltersDate;

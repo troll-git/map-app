@@ -23,7 +23,9 @@ import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import React, { useState, useEffect } from "react";
 import moment from "moment";
-import FiltersPozwolenia from "../components/FiltersPozwolenia";
+import FiltersDate from "./FiltersDate";
+import FiltersCategory from "./FiltersCategory";
+import FiltersInvestor from "./FIltersInvestor";
 
 const drawerWidth = "10%";
 
@@ -44,22 +46,71 @@ const FilterDrawer = (props) => {
 
   const thisYearStart = moment().startOf("year").format("YYYY-MM-DD");
   const thisYearNow = moment().format("YYYY-MM-DD");
+  const monthAgo = moment().add(-31, "days").format("YYYY-MM-DD");
+  const categoryEmpty = "";
 
   const [checkedPozwolenia, setcheckedPozwolenia] = useState(true);
   const [checkedWnioski, setcheckedWnioski] = useState(true);
   const [ExpandedPozwolenia, setExpandedPozwolenia] = useState(false);
   const [ExpandedWnioski, setExpandedWnioski] = useState(false);
   const [FilterData, setFilterData] = useState({
-    from: thisYearStart,
+    from: monthAgo,
     to: thisYearNow,
+    category: categoryEmpty,
+    investor: "",
+  });
+  const [FilterDataWnioski, setFilterDataWnioski] = useState({
+    from: monthAgo,
+    to: thisYearNow,
+    category: categoryEmpty,
   });
 
   useEffect(() => {
     props.cbFilters(FilterData);
+    props.cbFiltersWnioski(FilterDataWnioski);
   });
-
+  //pozwolenia filtry
   const updateFilterData = (dataFromChild) => {
-    setFilterData({ from: dataFromChild[0], to: dataFromChild[1] });
+    setFilterData({
+      from: dataFromChild[0],
+      to: dataFromChild[1],
+      category: FilterData.category,
+      investor: FilterData.investor,
+    });
+  };
+
+  const updateCategoryFilterPozwolenia = (dataFromChild) => {
+    setFilterData({
+      from: FilterData.from,
+      to: FilterData.to,
+      category: dataFromChild,
+      investor: FilterData.investor,
+    });
+  };
+
+  const updateInvestorFilterPozwolenia = (dataFromChild) => {
+    setFilterData({
+      from: FilterData.from,
+      to: FilterData.to,
+      category: FilterData.category,
+      investor: dataFromChild,
+    });
+  };
+  //filters wnioski
+  const updateFilterDataWnioski = (dataFromChild) => {
+    setFilterDataWnioski({
+      from: dataFromChild[0],
+      to: dataFromChild[1],
+      category: FilterDataWnioski.category,
+    });
+  };
+
+  const updateCategoryFilterWnioski = (dataFromChild) => {
+    setFilterDataWnioski({
+      from: FilterDataWnioski.from,
+      to: FilterDataWnioski.to,
+      category: dataFromChild,
+    });
   };
 
   const handleChangePozwolenia = (event) => {
@@ -115,7 +166,16 @@ const FilterDrawer = (props) => {
             />
           </AccordionSummary>
           <AccordionDetails>
-            <FiltersPozwolenia update={updateFilterData} />
+            <FiltersDate
+              update={updateFilterData}
+              title={"Data wydania pozwolenia na budowę"}
+            />
+          </AccordionDetails>
+          <AccordionDetails>
+            <FiltersCategory update={updateCategoryFilterPozwolenia} />
+          </AccordionDetails>
+          <AccordionDetails>
+            <FiltersInvestor update={updateInvestorFilterPozwolenia} />
           </AccordionDetails>
         </Accordion>
         <Accordion expanded={ExpandedWnioski} onChange={handleExpandWnioski}>
@@ -138,7 +198,13 @@ const FilterDrawer = (props) => {
             />
           </AccordionSummary>
           <AccordionDetails>
-            <Typography color="textSecondary">WNioski blebleble</Typography>
+            <FiltersDate
+              update={updateFilterDataWnioski}
+              title={"Data zgłoszenia"}
+            />
+          </AccordionDetails>
+          <AccordionDetails>
+            <FiltersCategory update={updateCategoryFilterWnioski} />
           </AccordionDetails>
         </Accordion>
       </Drawer>

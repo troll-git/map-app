@@ -23,6 +23,7 @@ const MainCanvas = () => {
   const [enabledPozwolenia, setEnablePozwolenia] = useState(true);
   const [enabledWnioski, setEnableWnioski] = useState(true);
   const [Filtry, setFiltry] = useState("undefined");
+  const [FiltryWnioski, setFiltryWnioski] = useState("undefined");
   const classes = useStyles();
 
   const callBackPozwolenia = (dataFromChild) => {
@@ -35,6 +36,10 @@ const MainCanvas = () => {
     setFiltry(dataFromChild);
   };
 
+  const callBackFiltryWnioski = (dataFromChild) => {
+    setFiltryWnioski(dataFromChild);
+  };
+
   return (
     <div className={classes.root}>
       <Grid container spacing={0}>
@@ -43,6 +48,7 @@ const MainCanvas = () => {
             callBackPozwolenia={callBackPozwolenia}
             callBackWnioski={callBackWnioski}
             cbFilters={callBackFiltry}
+            cbFiltersWnioski={callBackFiltryWnioski}
           />
         </Grid>
         <Grid item className={classes.paper} xs={10}>
@@ -51,6 +57,7 @@ const MainCanvas = () => {
               enabledPozwolenia={enabledPozwolenia}
               enabledWnioski={enabledWnioski}
               filtry={Filtry}
+              filtryWnioski={FiltryWnioski}
             />
           </ContainerDimensions>
         </Grid>

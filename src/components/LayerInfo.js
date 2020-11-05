@@ -14,7 +14,6 @@ export default function LayerInfo(props) {
   const clickAwayHandler = () => console.log("ee");
 
   if (infoType === "wniosek_info") {
-    console.log("wniosek_info");
     return (
       <React.Fragment>
         <PozwolenieInfo open={false} />
@@ -23,7 +22,6 @@ export default function LayerInfo(props) {
     );
   }
   if (infoType === "pozwolenie_info") {
-    console.log("pozwolenie_info");
     return (
       <React.Fragment>
         <PozwolenieInfo feat={props.feat} open={true} />

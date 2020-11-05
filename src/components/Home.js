@@ -25,6 +25,12 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.secondary,
     //width: "80%",
   },
+  paperinfo: {
+    width: "80%",
+    margin: "auto",
+    padding: "50px",
+    fontSize: 20,
+  },
 }));
 
 const Home = (props) => {
@@ -58,6 +64,7 @@ const Home = (props) => {
   return (
     <div>
       <h1>Dane z GUNB</h1>
+
       <div className={classes.root}>
         <Grid container spacing={4}>
           <Grid item className={classes.paper} xs={6}>
@@ -192,6 +199,20 @@ const Home = (props) => {
           </Grid>
         </Grid>
       </div>
+      <Paper className={classes.paperinfo} elevation={3}>
+        Na tej stronie prezentowane są dane pochodzące z{" "}
+        <a href="http://wyszukiwarka.gunb.gov.pl/" target="_blank">
+          wyszukiwarki publicznej
+        </a>{" "}
+        RWDZ publikowane przez Główny Urząd Nadzoru Budowlanego. Można je pobrać
+        z ww strony w postaci plików CSV. Dane można przeglądać na mapie poprzez
+        kliknięcie zakładki "MAPA". Na mapie można stosować filtry w celu
+        zawężania obszru poszukiwań. Dane na tej stronie służą jedynie celom
+        poglądowym. Poniższe tabele prezentują aktualny stan bazy danych oraz
+        ilość rekordów po aktualizacji. Aktualizacja zasobów odbywa się raz na
+        dzień. Jeśli masz pytania odnośnie tej strony, możesz skontaktować się
+        poprzez formularz kontaktowy dostępny pod zakładką kontakt.
+      </Paper>
     </div>
   );
 };
