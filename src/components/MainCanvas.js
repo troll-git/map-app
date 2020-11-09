@@ -6,10 +6,12 @@ import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
 import ContainerDimensions from "react-container-dimensions";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
+    backgroundColor: "red",
   },
   paper: {
     //padding: theme.spacing(2),
@@ -26,6 +28,29 @@ const MainCanvas = () => {
   const [FiltryWnioski, setFiltryWnioski] = useState("undefined");
   const classes = useStyles();
 
+  const fetchData = async () => {
+    const result = await axios(
+      "https://geolocation-db.com/json/09ba3820-0f88-11eb-9ba6-e1dd7dece2b8"
+    );
+    SendIpData(result.data);
+  };
+
+  const SendIpData = (body) => {
+    body.created_at = moment().format("YYYY-MM-DD hh:mm:ss");
+    console.log(body);
+    return fetch(`http://127.0.0.1:8000/api/ipdata/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    }).then((resp) => resp.json());
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   const callBackPozwolenia = (dataFromChild) => {
     setEnablePozwolenia(dataFromChild);
   };
@@ -41,7 +66,7 @@ const MainCanvas = () => {
   };
 
   return (
-    <div className={classes.root}>
+    <div className="main-canvas">
       <Grid container spacing={0}>
         <Grid item className={classes.paper} xs={2}>
           <FilterDrawer
@@ -51,7 +76,7 @@ const MainCanvas = () => {
             cbFiltersWnioski={callBackFiltryWnioski}
           />
         </Grid>
-        <Grid item className={classes.paper} xs={10}>
+        <Grid item className={classes.root} xs={10}>
           <ContainerDimensions>
             <MapClass
               enabledPozwolenia={enabledPozwolenia}

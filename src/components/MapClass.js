@@ -1,21 +1,17 @@
-import React, { useState, useEffect, useRef, createRef } from "react";
+import React from "react";
 import {
   Map,
   TileLayer,
   WMSTileLayer,
   LayerGroup,
   LayersControl,
-  Viewport,
-  DivOverlay,
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import PolygonLayer from "../components/PolygonLayer";
 import PozwoleniaLayer from "../components/PozwoleniaLayer";
 import WnioskiLayer from "../components/WnioskiLayer";
 import axios from "axios";
-import { bounds, map } from "leaflet";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import MapInfo from "../components/MapInfo";
 
 const DEFAULT_VIEWPORT = {
   center: [49.55813806107707, 20.633729696273807],
@@ -117,7 +113,10 @@ class MapClass extends React.Component {
       prevProps.enabledPozwolenia !== this.props.enabledPozwolenia ||
       prevProps.filtry !== this.props.filtry
     ) {
-      if (map.viewport.zoom > 5 && this.props.enabledPozwolenia) {
+      if (
+        (map.viewport.zoom > 5 && this.props.enabledPozwolenia) ||
+        (map.viewport.zoom === undefined && this.props.enabledPozwolenia)
+      ) {
         this.setState({ pozwolenia: null });
         this.fetchPozwolenia();
       }
@@ -128,7 +127,10 @@ class MapClass extends React.Component {
       prevProps.enabledWnioski !== this.props.enabledWnioski ||
       prevProps.filtryWnioski !== this.props.filtryWnioski
     ) {
-      if (map.viewport.zoom > 5 && this.props.enabledWnioski)
+      if (
+        (map.viewport.zoom > 5 && this.props.enabledWnioski) ||
+        (map.viewport.zoom === undefined && this.props.enabledWnioski)
+      )
         this.fetchWnioski();
       if (!this.props.enabledWnioski) this.setState({ wnioski: null });
     }
@@ -138,10 +140,9 @@ class MapClass extends React.Component {
     this.setState({ dane: null });
     this.setState({ pozwolenia: null });
     this.setState({ wnioski: null });
-    const map = this.mapRef.current;
-    {
-      viewport.zoom > 17 ? this.fetchData() : this.setState({ dane: null });
-    }
+
+    viewport.zoom > 17 ? this.fetchData() : this.setState({ dane: null });
+
     {
       viewport.zoom > 5 && this.props.enabledPozwolenia
         ? this.fetchPozwolenia()
@@ -187,7 +188,7 @@ class MapClass extends React.Component {
           animate="true"
           onViewportChanged={this.handleClick}
           ref={this.mapRef}
-          onclick={this.handleClick}
+          //onclick={this.handleClick}
         >
           <LayerGroup>
             <LayersControl position="topright">
@@ -195,24 +196,18 @@ class MapClass extends React.Component {
                 <TileLayer
                   attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  //url="http://globalheat.strava.com/tiles/cycling/color7/color7/{z}/{x}/{y}.png"
                 />
               </LayersControl.BaseLayer>
-              <LayersControl.BaseLayer name="esraj">
+
+              <LayersControl.BaseLayer name="esri">
                 <TileLayer
                   attribution='Tiles © <a href="https://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer">ArcGIS</a>'
                   url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}"
                 />
               </LayersControl.BaseLayer>
-              <LayersControl.Overlay name="orto">
-                <WMSTileLayer
-                  url="http://159.65.197.227:8080/geoserver/cite/wms?"
-                  layers="stary"
-                  transparent={true}
-                  format="image/png"
-                  opacity={0.8}
-                />
-              </LayersControl.Overlay>
-              <LayersControl.Overlay name="orto2">
+
+              <LayersControl.Overlay name="ortofotomapa">
                 <WMSTileLayer
                   url="http://mapy.geoportal.gov.pl/wss/service/img/guest/ORTO/MapServer/WMSServer?"
                   layers="Raster"

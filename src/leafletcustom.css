@@ -1,0 +1,21 @@
+.leaflet-tooltip-mod {
+  border: 0px;
+  width: 0px;
+  height: 0px;
+  box-shadow: none !important;
+  background: rgba(0, 0, 0, 0) !important;
+  direction: "center";
+  font-size: medium;
+  white-space: nowrap;
+}
+.leaflet-tooltip-back {
+  border: 0px;
+  width: 0px;
+  height: 0px;
+  box-shadow: none !important;
+  background: rgba(0, 0, 0, 0) !important;
+  direction: "center";
+  font-size: medium;
+  color: red;
+  -webkit-text-stroke: 5px white;
+}

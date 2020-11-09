@@ -14,6 +14,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import { ClickAwayListener } from "@material-ui/core";
 import KategoriaPopup from "../utils/KategoriaPopup";
+import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -27,6 +28,15 @@ const useStyles = makeStyles((theme) => ({
   },
   decyzjePanel: {
     backgroundColor: "#2981CA",
+  },
+  buttonClose: {
+    position: "absolute",
+    top: "15px",
+    right: "10px",
+    cursor: "pointer",
+    "&:hover": {
+      color: "red",
+    },
   },
 }));
 
@@ -42,7 +52,7 @@ export default function PozwolenieInfo(props) {
 
   const handleClose = () => {
     setOpen(false);
-    setData(props.feat[0]);
+    //setData(props.feat[0]);
   };
 
   return (
@@ -54,7 +64,7 @@ export default function PozwolenieInfo(props) {
             onClose={handleClose}
             style={{
               zIndex: 999,
-              position: "absolute",
+              position: "relative",
               top: 50,
               left: 900,
               width: 600,
@@ -63,8 +73,15 @@ export default function PozwolenieInfo(props) {
             }}
             disablePortal="true"
           >
+            <HighlightOffIcon
+              className={classes.buttonClose}
+              onClick={handleClose}
+            />
             <Paper>
-              <h2 className={classes.decyzjePanel}>DECYZJA</h2>
+              <span>
+                <h2 className={classes.decyzjePanel}>DECYZJA</h2>
+              </span>
+
               <TableContainer component={Paper}>
                 <Table
                   //className={classes.table}

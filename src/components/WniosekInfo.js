@@ -14,6 +14,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import { ClickAwayListener } from "@material-ui/core";
 import KategoriaPopup from "../utils/KategoriaPopup";
+import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -27,6 +28,15 @@ const useStyles = makeStyles((theme) => ({
   },
   wnioskiPanel: {
     backgroundColor: "#E74C3C",
+  },
+  buttonClose: {
+    position: "absolute",
+    top: "15px",
+    right: "10px",
+    cursor: "pointer",
+    "&:hover": {
+      color: "blue",
+    },
   },
 }));
 
@@ -70,6 +80,10 @@ export default function WniosekInfo(props) {
             }}
             disablePortal="true"
           >
+            <HighlightOffIcon
+              className={classes.buttonClose}
+              onClick={handleClose}
+            />
             <Paper>
               <h2 className={classes.wnioskiPanel}>ZGŁOSZENIE</h2>
               <TableContainer component={Paper}>

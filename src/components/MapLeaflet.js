@@ -7,6 +7,7 @@ import {
   LayersControl,
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
+import "../leafletcustom.css";
 import PolygonLayer from "../components/PolygonLayer";
 import axios from "axios";
 import { bounds } from "leaflet";
@@ -20,18 +21,6 @@ const MapLeaflet = () => {
   const [dane, setDane] = useState(undefined);
   const [zoom, setZoom] = useState(20);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const result = await axios("http://127.0.0.1:8000/api/dzialki/");
-      console.log(result.data);
-      setDane(result.data);
-      //return result.data;
-    };
-    fetchData();
-  }, []);
-  useEffect(() => {
-    console.log("dick");
-  }, [zoom]);
   const getBbox = (bbox) => {
     setBbox(bbox);
   };
@@ -91,7 +80,6 @@ const MapLeaflet = () => {
       </Map>
     </React.Fragment>
   );
-
 };
 
 export default MapLeaflet;

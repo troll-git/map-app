@@ -10,26 +10,21 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
 import Skeleton from "@material-ui/lab/Skeleton";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-    padding: "20px",
-    marginBottom: "20px",
-  },
   paper: {
-    //padding: theme.spacing(2),
-    //textAlign: "center",
     color: theme.palette.text.secondary,
-    //width: "80%",
+    margin: "auto",
+    width: "80vw",
   },
   paperinfo: {
     width: "80%",
     margin: "auto",
-    padding: "50px",
+    marginTop: "40px",
+    padding: "40px",
     fontSize: 20,
+    opacity: 0.8,
   },
 }));
 
@@ -60,13 +55,15 @@ const Home = (props) => {
 
     console.log(update.total_skipped_pozwolenia);
   }, []);
-
+  const redirectToMap = () => {
+    window.open(window.location.href + "map", "_self");
+  };
   return (
     <div>
-      <h1>Dane z GUNB</h1>
+      <h1>MAPA GUNB</h1>
 
-      <div className={classes.root}>
-        <Grid container spacing={4}>
+      <div>
+        <Grid container spacing={4} style={{ height: "100%" }}>
           <Grid item className={classes.paper} xs={6}>
             {loaded ? (
               <div>

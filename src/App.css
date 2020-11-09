@@ -1,6 +1,8 @@
 .App {
   text-align: center;
-  background-color: #61dafb;
+  height: 100vh;
+  background-image: url("background.jpg");
+  background-size: contain;
 }
 
 .App-logo {
@@ -66,4 +68,8 @@
   line-height: 37px;
   text-align: center;
   width: 40px;
+}
+
+.main-canvas {
+  background: #e74c3c;
 }

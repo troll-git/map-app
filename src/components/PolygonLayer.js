@@ -46,10 +46,17 @@ const PolygonLayer = (props) => {
         style={{ color: "blue" }}
         data={props.dane}
         onEachFeature={(feature, layer) => {
+          layer.bindTooltip(feature.properties.numer, {
+            permanent: true,
+            className: "leaflet-tooltip-back",
+          });
+          layer.bindTooltip(feature.properties.numer, {
+            permanent: true,
+            className: "leaflet-tooltip-mod",
+          });
           layer.on("click", () => {
             props.bbox(layer.getBounds());
-            //console.log(dane);
-            setOpen(true);
+            //setOpen(true);
             setFeat(feature);
             setId(Date.now());
             select(layer);
