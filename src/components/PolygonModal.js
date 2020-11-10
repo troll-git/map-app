@@ -1,20 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
-import { useState, useEffect } from "react";
-import {
-  Map,
-  TileLayer,
-  Marker,
-  Popup,
-  WMSTileLayer,
-  LayerGroup,
-  LayersControl,
-  AttributionControl,
-  DivOverlay,
-  GeoJSON,
-  Tooltip,
-} from "react-leaflet";
+import { useEffect } from "react";
 
 function getModalStyle() {
   const top = 1;

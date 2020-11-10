@@ -1,19 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { useEffect, useState } from "react";
-import { Popper } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
-
-/*function getModalStyle() {
-  const top = 1000;
-  const right = 1;
-
-  return {
-    top: `${top}%`,
-    right: `${right}%`,
-    transform: `translate(-${top}%, -${right}%)`,
-  };
-}*/
 
 const useStyles = makeStyles((theme) => ({
   papers: {
@@ -30,7 +18,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function MapInfo(props) {
-  // getModalStyle is not a pure function, we roll the style only on the first render
   const [open, setOpen] = useState(props.opened);
   const [data, setData] = useState("");
   const classes = useStyles();
@@ -40,9 +27,6 @@ export default function MapInfo(props) {
     handleData();
   }, [props]);
 
-  const handleClose = () => {
-    setOpen(false);
-  };
   const handleData = () => {
     if (!!props.feat) {
       const dat = Object.values(props.feat.properties).map((e) => e);

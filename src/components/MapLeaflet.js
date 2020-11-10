@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import {
   Map,
   TileLayer,
@@ -9,8 +9,6 @@ import {
 import "leaflet/dist/leaflet.css";
 import "../leafletcustom.css";
 import PolygonLayer from "../components/PolygonLayer";
-import axios from "axios";
-import { bounds } from "leaflet";
 
 const MapLeaflet = () => {
   const [bbox, setBbox] = useState([
@@ -25,11 +23,6 @@ const MapLeaflet = () => {
     setBbox(bbox);
   };
 
-  const testG = () => {
-    setZoom(Map.zoom);
-    console.log(zoom);
-  };
-
   return (
     <React.Fragment>
       <Map
@@ -40,7 +33,6 @@ const MapLeaflet = () => {
         maxZoom={19}
         bounds={bbox}
         animate="true"
-        //onClick={testG}
       >
         <LayerGroup>
           <LayersControl position="topright">

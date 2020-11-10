@@ -1,9 +1,4 @@
-import {
-  FormControlLabel,
-  FormControl,
-  FormLabel,
-  TextField,
-} from "@material-ui/core";
+import { FormControl, FormLabel, TextField } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 
 const FiltersInvestor = (props) => {

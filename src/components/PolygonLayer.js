@@ -1,12 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { GeoJSON, Tooltip } from "react-leaflet";
-import DataF from "../assets/starysacz.json";
-
 import PolygonModal from "../components/PolygonModal";
 import MapInfo from "../components/MapInfo";
-import { API } from "../components/api-service";
-import axios from "axios";
-import useSWR from "swr";
 
 const PolygonLayer = (props) => {
   const [open, setOpen] = useState(false);
@@ -39,21 +34,12 @@ const PolygonLayer = (props) => {
   let selected = null;
   let highlighted = null;
 
-  //console.log(props.dane);
   return (
     <React.Fragment>
       <GeoJSON
         style={{ color: "blue" }}
         data={props.dane}
         onEachFeature={(feature, layer) => {
-          layer.bindTooltip(feature.properties.numer, {
-            permanent: true,
-            className: "leaflet-tooltip-back",
-          });
-          layer.bindTooltip(feature.properties.numer, {
-            permanent: true,
-            className: "leaflet-tooltip-mod",
-          });
           layer.on("click", () => {
             props.bbox(layer.getBounds());
             //setOpen(true);

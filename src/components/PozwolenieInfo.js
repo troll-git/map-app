@@ -2,15 +2,10 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { useEffect, useState } from "react";
 import { Paper, Popper, Divider } from "@material-ui/core";
-import Typography from "@material-ui/core/Typography";
-import axios from "axios";
-import zIndex from "@material-ui/core/styles/zIndex";
-import { Popup } from "react-leaflet";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import { ClickAwayListener } from "@material-ui/core";
 import KategoriaPopup from "../utils/KategoriaPopup";
@@ -43,7 +38,6 @@ const useStyles = makeStyles((theme) => ({
 export default function PozwolenieInfo(props) {
   // getModalStyle is not a pure function, we roll the style only on the first render
   const [open, setOpen] = useState(props.open);
-  const [data, setData] = useState();
   const classes = useStyles();
 
   useEffect(() => {

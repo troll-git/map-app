@@ -1,9 +1,8 @@
-import React, { useState, useEffect, useRef, createContext } from "react";
+import React, { useState, useEffect } from "react";
 import MapClass from "../components/MapClass";
 import FilterDrawer from "../components/FilterDrawer";
 import moment from "moment";
 import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
 import ContainerDimensions from "react-container-dimensions";
 import axios from "axios";
@@ -14,10 +13,8 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "red",
   },
   paper: {
-    //padding: theme.spacing(2),
     textAlign: "center",
     color: theme.palette.text.secondary,
-    //width: "80%",
   },
 }));
 
@@ -37,7 +34,6 @@ const MainCanvas = () => {
 
   const SendIpData = (body) => {
     body.created_at = moment().format("YYYY-MM-DD hh:mm:ss");
-    console.log(body);
     return fetch(`http://127.0.0.1:8000/api/ipdata/`, {
       method: "POST",
       headers: {

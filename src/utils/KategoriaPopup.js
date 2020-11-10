@@ -156,6 +156,9 @@ const KategoriaPopup = (props) => {
         setInfo(
           "Kategoria XXX – obiekty służące do korzystania z zasobów wodnych (ujęcia wód morskich i śródlądowych, budowle zrzutów wód i ścieków, pompownie, stacje strefowe, stacje uzdatniania wody, oczyszczalnie ścieków"
         );
+        break;
+      default:
+        setInfo("Brak kategorii");
     }
   }, [props]);
 

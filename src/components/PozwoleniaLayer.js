@@ -1,27 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { GeoJSON, Marker, Popup } from "react-leaflet";
-import DataF from "../assets/starysacz.json";
-
-import PolygonModal from "../components/PolygonModal";
-import PozwolenieInfo from "../components/PozwolenieInfo";
+import React, { useState } from "react";
+import { GeoJSON } from "react-leaflet";
 import LayerInfo from "../components/LayerInfo";
 
-import { API } from "../components/api-service";
 import axios from "axios";
-import useSWR from "swr";
 import L from "leaflet";
 import MarkerCluserGroup from "react-leaflet-markercluster";
 import "react-leaflet-markercluster/dist/styles.min.css";
 
 delete L.Icon.Default.prototype._getIconUrl;
-
-const createClusterCustomIcon = function (cluster) {
-  return L.divIcon({
-    html: <span>\${cluster.getChildCount()}</span>,
-    className: "marker-cluster-custom",
-    iconSize: L.point(40, 40, true),
-  });
-};
 
 L.Icon.Default.mergeOptions({
   iconRetinaUtl: require("leaflet/dist/images/marker-icon-2x.png"),
@@ -30,10 +16,6 @@ L.Icon.Default.mergeOptions({
 });
 
 const PozwoleniaLayer = (props) => {
-  const [open, setOpen] = useState(false);
-  const [feat, setFeat] = useState(undefined);
-  const [id, setId] = useState(undefined);
-  const [idP, setIdP] = useState(undefined);
   const [data, setData] = useState(undefined);
 
   const fetchData = async (id) => {
