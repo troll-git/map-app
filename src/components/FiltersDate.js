@@ -14,8 +14,9 @@ const FiltersDate = (props) => {
   const thisYearStart = moment().startOf("year").format("YYYY-MM-DD");
   const thisYearNow = moment().format("YYYY-MM-DD");
   const monthAgo = moment().add(-30, "days").format("YYYY-MM-DD");
-  const [dateOption, setDateOption] = useState("lastMonth");
-  const [dateFrom, setDateFrom] = useState(monthAgo);
+  const weekAgo = moment().add(-7, "days").format("YYYY-MM-DD");
+  const [dateOption, setDateOption] = useState("lastWeek");
+  const [dateFrom, setDateFrom] = useState(weekAgo);
   const [dateTo, setDateTo] = useState(thisYearNow);
   const [calendarDisabled, setCalendarDisabled] = useState(true);
 
@@ -28,11 +29,17 @@ const FiltersDate = (props) => {
       setDateOption(event.target.value);
       setCalendarDisabled(false);
     }
+    if (event.target.value === "lastWeek") {
+      setCalendarDisabled(true);
+      setDateOption(event.target.value);
+      setDateFrom(weekAgo);
+      setDateTo(thisYearNow);
+      props.update([weekAgo, thisYearNow]);
+    }
     if (event.target.value === "lastMonth") {
       setCalendarDisabled(true);
       setDateOption(event.target.value);
       setDateFrom(monthAgo);
-      console.log(monthAgo);
       setDateTo(thisYearNow);
       props.update([monthAgo, thisYearNow]);
     }
@@ -61,6 +68,11 @@ const FiltersDate = (props) => {
         value={dateOption}
         onChange={handleChangeDate}
       >
+      <FormControlLabel
+      value="lastWeek"
+      control={<Radio />}
+      label="Ostatni tydzień"
+    />
         <FormControlLabel
           value="lastMonth"
           control={<Radio />}
@@ -71,11 +83,7 @@ const FiltersDate = (props) => {
           control={<Radio />}
           label="Bieżący rok"
         />
-        <FormControlLabel
-          value="allYear"
-          control={<Radio />}
-          label="wszystkie lata"
-        />
+       
         <FormControlLabel
           value="customdate"
           control={<Radio />}

@@ -35,6 +35,7 @@ const FilterDrawer = (props) => {
   const thisYearStart = moment().startOf("year").format("YYYY-MM-DD");
   const thisYearNow = moment().format("YYYY-MM-DD");
   const monthAgo = moment().add(-31, "days").format("YYYY-MM-DD");
+  const weekAgo = moment().add(-7, "days").format("YYYY-MM-DD");
   const categoryEmpty = "";
 
   const [checkedPozwolenia, setcheckedPozwolenia] = useState(true);
@@ -42,13 +43,13 @@ const FilterDrawer = (props) => {
   const [ExpandedPozwolenia, setExpandedPozwolenia] = useState(false);
   const [ExpandedWnioski, setExpandedWnioski] = useState(false);
   const [FilterData, setFilterData] = useState({
-    from: monthAgo,
+    from: weekAgo,
     to: thisYearNow,
     category: categoryEmpty,
     investor: "",
   });
   const [FilterDataWnioski, setFilterDataWnioski] = useState({
-    from: monthAgo,
+    from: weekAgo,
     to: thisYearNow,
     category: categoryEmpty,
   });
@@ -125,7 +126,7 @@ const FilterDrawer = (props) => {
       <Drawer
         className={classes.drawer}
         //BackdropProps={{ invisible: true }}
-        variant="permanent"
+        variant="persistent"
         anchor="left"
         open="false"
       >

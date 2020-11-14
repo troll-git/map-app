@@ -20,7 +20,7 @@ const WnioskiLayer = (props) => {
   const [data, setData] = useState(undefined);
 
   const fetchData = async (id) => {
-    const result = await axios("http://127.0.0.1:8000/api/wniosek/?id=" + id);
+    const result = await axios(process.env.REACT_APP_API_URL+"api/wniosek/?id=" + id);
     console.log(result.data);
     setData(result.data);
   };

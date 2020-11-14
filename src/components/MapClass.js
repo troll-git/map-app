@@ -31,13 +31,15 @@ class MapClass extends React.Component {
       bbox: "",
       getPozwolenia: "false",
       feat: "",
+      circlePozwolenia:false,
+      circleWnioski:false
     };
   }
 
   fetchData = async () => {
     const map = this.mapRef.current;
-    const result = await axios(
-      "http://127.0.0.1:8000/api/dzialki/?bbox=" +
+    const result = await axios(process.env.REACT_APP_API_URL+
+      "api/dzialki/?bbox=" +
         this.getBoundaries(map)._southWest.lat +
         "," +
         this.getBoundaries(map)._southWest.lng +
@@ -54,9 +56,11 @@ class MapClass extends React.Component {
 
   fetchPozwolenia = async () => {
     const map = this.mapRef.current;
-
-    const result = await axios(
-      "http://127.0.0.1:8000/api/pozwolenia_geom/?bbox=" +
+    this.setState({
+      circlePozwolenia: true,
+    })
+    const result = await axios(process.env.REACT_APP_API_URL+
+      "api/pozwolenia_geom/?bbox=" +
         this.getBoundaries(map)._southWest.lat +
         "," +
         this.getBoundaries(map)._southWest.lng +
@@ -76,12 +80,18 @@ class MapClass extends React.Component {
     this.setState({
       pozwolenia: result.data,
     });
+    this.setState({
+      circlePozwolenia: false,
+    })
   };
 
   fetchWnioski = async () => {
     const map = this.mapRef.current;
-    const result = await axios(
-      "http://127.0.0.1:8000/api/wnioski_geom/?bbox=" +
+    this.setState({
+      circleWnioski: true,
+    })
+    const result = await axios(process.env.REACT_APP_API_URL+
+      "api/wnioski_geom/?bbox=" +
         this.getBoundaries(map)._southWest.lat +
         "," +
         this.getBoundaries(map)._southWest.lng +
@@ -99,6 +109,9 @@ class MapClass extends React.Component {
     this.setState({
       wnioski: result.data,
     });
+    this.setState({
+      circleWnioski: false,
+    })
   };
 
   componentDidMount() {
@@ -114,7 +127,7 @@ class MapClass extends React.Component {
       prevProps.filtry !== this.props.filtry
     ) {
       if (
-        (map.viewport.zoom > 5 && this.props.enabledPozwolenia) ||
+        (map.viewport.zoom > 10 && this.props.enabledPozwolenia) ||
         (map.viewport.zoom === undefined && this.props.enabledPozwolenia)
       ) {
         this.setState({ pozwolenia: null });
@@ -128,7 +141,7 @@ class MapClass extends React.Component {
       prevProps.filtryWnioski !== this.props.filtryWnioski
     ) {
       if (
-        (map.viewport.zoom > 5 && this.props.enabledWnioski) ||
+        (map.viewport.zoom > 10 && this.props.enabledWnioski) ||
         (map.viewport.zoom === undefined && this.props.enabledWnioski)
       )
         this.fetchWnioski();
@@ -144,12 +157,12 @@ class MapClass extends React.Component {
     viewport.zoom > 17 ? this.fetchData() : this.setState({ dane: null });
 
     {
-      viewport.zoom > 5 && this.props.enabledPozwolenia
+      viewport.zoom > 10 && this.props.enabledPozwolenia
         ? this.fetchPozwolenia()
         : this.setState({ pozwolenia: null });
     }
     {
-      viewport.zoom > 5 && this.props.enabledWnioski
+      viewport.zoom > 10 && this.props.enabledWnioski
         ? this.fetchWnioski()
         : this.setState({ wnioski: null });
     }
@@ -218,30 +231,27 @@ class MapClass extends React.Component {
               </LayersControl.Overlay>
               {!!this.state.pozwolenia ? (
                 <PozwoleniaLayer dane={this.state.pozwolenia} />
-              ) : this.props.enabledPozwolenia && this.zoom > 10 ? (
+              ) :  (this.state.circlePozwolenia?(
                 <CircularProgress
                   style={{
                     zIndex: 999,
                     position: "absolute",
                     top: 500,
                   }}
-                />
-              ) : (
-                <div></div>
-              )}
+                />):(<div></div>)
+              ) }
               {!!this.state.wnioski ? (
                 <WnioskiLayer dane={this.state.wnioski} />
-              ) : this.props.enabledWnioski && this.zoom > 5 ? (
+              ) :  (this.state.circleWnioski?(
                 <CircularProgress
                   style={{
+                    color:"red",
                     zIndex: 999,
                     position: "absolute",
                     top: 400,
                   }}
-                />
-              ) : (
-                <div></div>
-              )}
+                />):(<div></div>)
+              ) }
               {!!this.state.dane ? (
                 <PolygonLayer
                   bbox={this.getBbox}

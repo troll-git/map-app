@@ -35,14 +35,14 @@ const Home = (props) => {
   const [loadedUpdate, setLoadedUpdate] = useState(false);
   const classes = useStyles();
   const fetchData = async () => {
-    const result = await axios("http://127.0.0.1:8000/api/stats/?");
+    const result = await axios(process.env.REACT_APP_API_URL+"api/stats/?");
     setData(result.data);
     setLoaded(true);
     return result;
   };
 
   const fetchUpdate = async () => {
-    const result = await axios("http://127.0.0.1:8000/api/update/?");
+    const result = await axios(process.env.REACT_APP_API_URL+"api/update/?");
     console.log(result.data[0]);
     setUpdate(result.data[0]);
     setLoadedUpdate(true);
@@ -79,6 +79,7 @@ const Home = (props) => {
                         <TableCell>Stan aktualny</TableCell>
                         <TableCell>Suma rekordów</TableCell>
                         <TableCell>Suma rekordów na mapie</TableCell>
+                        <TableCell>%</TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
@@ -94,6 +95,11 @@ const Home = (props) => {
                             {data.wnioski_geom}
                           </CountUpAnimation>
                         </TableCell>
+                        <TableCell>
+                          <CountUpAnimation duration={500}>
+                            {(data.wnioski_geom/data.wnioski)*100}
+                          </CountUpAnimation>
+                        </TableCell>
                       </TableRow>
                       <TableRow>
                         <TableCell>Liczba decyzji</TableCell>
@@ -107,6 +113,11 @@ const Home = (props) => {
                             {data.pozwolenia_geom}
                           </CountUpAnimation>
                         </TableCell>
+                        <TableCell>
+                        <CountUpAnimation duration={500}>
+                          {(data.pozwolenia_geom/data.pozwolenia)*100}
+                        </CountUpAnimation>
+                      </TableCell>
                       </TableRow>
                       <TableRow>
                         <TableCell>Liczba działek</TableCell>
@@ -123,13 +134,13 @@ const Home = (props) => {
               </div>
             ) : (
               <div>
-                <Skeleton variant="text" height={30} />
-                <Skeleton variant="rect" height={300} />
+                <Skeleton variant="text" height={30} animation="wave"/>
+                <Skeleton variant="rect" height={300} animation="wave"/>
               </div>
             )}
           </Grid>
-          <Grid item className={classes.paper} xs={6}>
-            {loadedUpdate ? (
+          <Grid item className={classes.paper} xs={6}>{loadedUpdate ? (<h1>Ostatnio zaktualizowano: {update.updated_at}</h1>):(<div></div>)}
+           {/*loadedUpdate ? (
               <div>
                 <h1>Aktualizacja {update.updated_at}</h1>
                 <TableContainer component={Paper}>
@@ -192,7 +203,7 @@ const Home = (props) => {
                 <Skeleton variant="text" height={30} />
                 <Skeleton variant="rect" height={300} />
               </div>
-            )}
+            )*/}
           </Grid>
         </Grid>
       </div>
