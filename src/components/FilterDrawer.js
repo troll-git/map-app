@@ -14,23 +14,38 @@ import moment from "moment";
 import FiltersDate from "./FiltersDate";
 import FiltersCategory from "./FiltersCategory";
 import FiltersInvestor from "./FIltersInvestor";
+import KeyboardArrowLeftSharpIcon from '@material-ui/icons/KeyboardArrowLeftSharp';
 
-const drawerWidth = "10%";
+const drawerWidth = "30hw";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
+    position:"relative",
   },
   drawer: {
-    [theme.breakpoints.up("sm")]: {
       width: drawerWidth,
       flexShrink: 0,
+      overflow:"hidden",
+      backgroundColor:"red"
+
+  },
+  toggleDrawer: {
+    position: "absolute",
+    top: "150px",
+    left: "98%",
+    backgroundColor:"blue",
+    zIndex:999,
+    cursor: "pointer",
+    "&:hover": {
+      color: "red",
     },
   },
 }));
 
 const FilterDrawer = (props) => {
   const classes = useStyles();
+  const [open, setOpen] = useState(true);
 
   const thisYearStart = moment().startOf("year").format("YYYY-MM-DD");
   const thisYearNow = moment().format("YYYY-MM-DD");
@@ -76,6 +91,10 @@ const FilterDrawer = (props) => {
       investor: FilterData.investor,
     });
   };
+
+  const closeDrawer=()=>{
+    setOpen(false)
+  }
 
   const updateInvestorFilterPozwolenia = (dataFromChild) => {
     setFilterData({
@@ -123,14 +142,18 @@ const FilterDrawer = (props) => {
 
   return (
     <div className={classes.root}>
+    <KeyboardArrowLeftSharpIcon
+      className={classes.toggleDrawer}
+      onClick={closeDrawer}
+    />
       <Drawer
         className={classes.drawer}
         //BackdropProps={{ invisible: true }}
         variant="persistent"
         anchor="left"
-        open="false"
+        open={open}
       >
-        <h2>Filtry</h2>
+        <h2>Filtry </h2>
         <Accordion
           expanded={ExpandedPozwolenia}
           onChange={handleExpandPozwolenia}
