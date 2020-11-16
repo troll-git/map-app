@@ -48,8 +48,9 @@ const PozwoleniaLayer = (props) => {
   return (
     <React.Fragment>
       <MarkerCluserGroup
-        spiderfyDistanceMultiplier={2}
+        spiderfyDistanceMultiplier={1}
         iconCreateFunction={createClusterCustomIcon}
+        disableClusteringAtZoom={18}
       >
         {props.dane.features.map((pozw) => (
           <Marker
