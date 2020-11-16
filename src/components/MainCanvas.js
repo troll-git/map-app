@@ -9,8 +9,9 @@ import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    flexGrow: 1,
+    //flexGrow: 1,
     backgroundColor: "red",
+    height: "100vh",
   },
   paper: {
     textAlign: "center",
@@ -34,7 +35,7 @@ const MainCanvas = () => {
 
   const SendIpData = (body) => {
     body.created_at = moment().format("YYYY-MM-DD hh:mm:ss");
-    return fetch(process.env.REACT_APP_API_URL+`api/ipdata/`, {
+    return fetch(process.env.REACT_APP_API_URL + `api/ipdata/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -72,7 +73,7 @@ const MainCanvas = () => {
             cbFiltersWnioski={callBackFiltryWnioski}
           />
         </Grid>
-        <Grid item className={classes.root} xs={10}>
+        <Grid item className={classes.root} xs={12}>
           <ContainerDimensions>
             <MapClass
               enabledPozwolenia={enabledPozwolenia}

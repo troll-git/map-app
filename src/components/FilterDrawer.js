@@ -32,14 +32,14 @@ const useStyles = makeStyles((theme) => ({
   },
   hideDrawer: {
     position: "absolute",
-    top: "150px",
-    left: "100%",
+    top: "40px",
+    left: "80%",
     backgroundColor: "white",
     zIndex: 999,
   },
   showDrawer: {
     position: "absolute",
-    top: "150px",
+    top: "0px",
     left: "0%",
     backgroundColor: "white",
     zIndex: 999,
@@ -170,6 +170,14 @@ const FilterDrawer = (props) => {
         open={open}
       >
         <h2>Filtry </h2>
+        <h2>
+          {" "}
+          <ArrowBackIosIcon
+            className={classes.hideDrawer}
+            onClick={closeDrawer}
+            fontSize="large"
+          />
+        </h2>
         <Accordion
           expanded={ExpandedPozwolenia}
           onChange={handleExpandPozwolenia}

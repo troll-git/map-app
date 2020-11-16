@@ -19,9 +19,10 @@ function App() {
 
   return (
     <div className="App">
+      {" "}
       <Router>
         <AppBar position="static">
-          <Grid container spacing={3} style={{ height: "100%" }}>
+          <Grid container>
             <Grid item xs={12} sm={6}></Grid>
             <Grid item xs={12} sm={6}>
               <Grid container justify={"flex-end"}>
@@ -50,7 +51,7 @@ function App() {
           </Grid>
         </AppBar>
         {/* A <Switch> looks through its children <Route>s and
-          renders the first one that matches the current URL. */}
+    renders the first one that matches the current URL. */}
         <Switch>
           <Route path="/contact">
             <Contact />

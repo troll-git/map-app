@@ -11,6 +11,9 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
 import Skeleton from "@material-ui/lab/Skeleton";
+import moment from "moment";
+import MuiAlert from "@material-ui/lab/Alert";
+import { Snackbar } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -35,14 +38,14 @@ const Home = (props) => {
   const [loadedUpdate, setLoadedUpdate] = useState(false);
   const classes = useStyles();
   const fetchData = async () => {
-    const result = await axios(process.env.REACT_APP_API_URL+"api/stats/?");
+    const result = await axios(process.env.REACT_APP_API_URL + "api/stats/?");
     setData(result.data);
     setLoaded(true);
     return result;
   };
 
   const fetchUpdate = async () => {
-    const result = await axios(process.env.REACT_APP_API_URL+"api/update/?");
+    const result = await axios(process.env.REACT_APP_API_URL + "api/update/?");
     console.log(result.data[0]);
     setUpdate(result.data[0]);
     setLoadedUpdate(true);
@@ -97,7 +100,7 @@ const Home = (props) => {
                         </TableCell>
                         <TableCell>
                           <CountUpAnimation duration={500}>
-                            {(data.wnioski_geom/data.wnioski)*100}
+                            {(data.wnioski_geom / data.wnioski) * 100}
                           </CountUpAnimation>
                         </TableCell>
                       </TableRow>
@@ -114,10 +117,10 @@ const Home = (props) => {
                           </CountUpAnimation>
                         </TableCell>
                         <TableCell>
-                        <CountUpAnimation duration={500}>
-                          {(data.pozwolenia_geom/data.pozwolenia)*100}
-                        </CountUpAnimation>
-                      </TableCell>
+                          <CountUpAnimation duration={500}>
+                            {(data.pozwolenia_geom / data.pozwolenia) * 100}
+                          </CountUpAnimation>
+                        </TableCell>
                       </TableRow>
                       <TableRow>
                         <TableCell>Liczba działek</TableCell>
@@ -134,13 +137,18 @@ const Home = (props) => {
               </div>
             ) : (
               <div>
-                <Skeleton variant="text" height={30} animation="wave"/>
-                <Skeleton variant="rect" height={300} animation="wave"/>
+                <Skeleton variant="text" height={30} animation="wave" />
+                <Skeleton variant="rect" height={300} animation="wave" />
               </div>
             )}
           </Grid>
-          <Grid item className={classes.paper} xs={6}>{loadedUpdate ? (<h1>Ostatnio zaktualizowano: {update.updated_at}</h1>):(<div></div>)}
-           {/*loadedUpdate ? (
+          <Grid item className={classes.paper} xs={6}>
+            {loadedUpdate ? (
+              <h1>Ostatnio zaktualizowano: {update.updated_at}</h1>
+            ) : (
+              <div></div>
+            )}
+            {/*loadedUpdate ? (
               <div>
                 <h1>Aktualizacja {update.updated_at}</h1>
                 <TableContainer component={Paper}>
@@ -207,20 +215,33 @@ const Home = (props) => {
           </Grid>
         </Grid>
       </div>
-      <Paper className={classes.paperinfo} elevation={3}>
-        Na tej stronie prezentowane są dane pochodzące z{" "}
-        <a href="http://wyszukiwarka.gunb.gov.pl/" target="_blank">
-          wyszukiwarki publicznej
-        </a>{" "}
-        RWDZ publikowane przez Główny Urząd Nadzoru Budowlanego. Można je pobrać
-        z ww strony w postaci plików CSV. Dane można przeglądać na mapie poprzez
-        kliknięcie zakładki "MAPA". Na mapie można stosować filtry w celu
-        zawężania obszru poszukiwań. Dane na tej stronie służą jedynie celom
-        poglądowym. Poniższe tabele prezentują aktualny stan bazy danych oraz
-        ilość rekordów po aktualizacji. Aktualizacja zasobów odbywa się raz na
-        dzień. Jeśli masz pytania odnośnie tej strony, możesz skontaktować się
-        poprzez formularz kontaktowy dostępny pod zakładką kontakt.
-      </Paper>
+      <Snackbar
+        open={true}
+        autoHideDuration={2000}
+        //onClose={setSnackbarOpen(false)}
+      >
+        <MuiAlert
+          elevation={6}
+          variant="filled"
+          //onClose={handleClose}
+          severity="success"
+          icon={false}
+        >
+          Na tej stronie prezentowane są dane pochodzące z{" "}
+          <a href="http://wyszukiwarka.gunb.gov.pl/" target="_blank">
+            wyszukiwarki publicznej
+          </a>{" "}
+          RWDZ publikowane przez Główny Urząd Nadzoru Budowlanego. Można je
+          pobrać z ww strony w postaci plików CSV. Dane można przeglądać na
+          mapie poprzez kliknięcie zakładki "MAPA". Na mapie można stosować
+          filtry w celu zawężania obszru poszukiwań. Dane na tej stronie służą
+          jedynie celom poglądowym. Poniższe tabele prezentują aktualny stan
+          bazy danych oraz ilość rekordów po aktualizacji. Aktualizacja zasobów
+          odbywa się raz na dzień. Jeśli masz pytania odnośnie tej strony,
+          możesz skontaktować się poprzez formularz kontaktowy dostępny pod
+          zakładką kontakt.
+        </MuiAlert>
+      </Snackbar>
     </div>
   );
 };

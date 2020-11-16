@@ -5,6 +5,7 @@ import {
   WMSTileLayer,
   LayerGroup,
   LayersControl,
+  ZoomControl,
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import PolygonLayer from "../components/PolygonLayer";
@@ -18,6 +19,9 @@ const DEFAULT_VIEWPORT = {
   center: [49.55813806107707, 20.633729696273807],
   zoom: 11,
 };
+
+//Axios cancel token
+const source = axios.CancelToken.source();
 
 class MapClass extends React.Component {
   constructor(props) {
@@ -48,7 +52,8 @@ class MapClass extends React.Component {
         "," +
         this.getBoundaries(map)._northEast.lat +
         "," +
-        this.getBoundaries(map)._northEast.lng
+        this.getBoundaries(map)._northEast.lng,
+      { CancelToken: source.token }
     );
     this.setState({
       dane: result.data,
@@ -78,7 +83,8 @@ class MapClass extends React.Component {
         "&category=" +
         this.props.filtry.category +
         "&investor=" +
-        this.props.filtry.investor
+        this.props.filtry.investor,
+      { CancelToken: source.token }
     );
     this.setState({
       pozwolenia: result.data,
@@ -119,6 +125,8 @@ class MapClass extends React.Component {
   };
 
   componentDidMount() {
+    const map = this.mapRef.current;
+    this.setState({ bbox: this.getBoundaries(map) });
     this.fetchPozwolenia();
     this.fetchWnioski();
   }
@@ -196,7 +204,7 @@ class MapClass extends React.Component {
           id="map"
           viewport={this.state.viewport}
           style={{
-            height: "900px",
+            height: this.props.height,
             width: this.props.width,
             position: "absolute",
             right: "0px",
@@ -206,6 +214,7 @@ class MapClass extends React.Component {
           animate="true"
           onViewportChanged={this.handleClick}
           ref={this.mapRef}
+          zoomControl={false}
           //onclick={this.handleClick}
         >
           <LayerGroup>
@@ -235,7 +244,10 @@ class MapClass extends React.Component {
                 />
               </LayersControl.Overlay>
               {!!this.state.pozwolenia ? (
-                <PozwoleniaLayer dane={this.state.pozwolenia} />
+                <PozwoleniaLayer
+                  dane={this.state.pozwolenia}
+                  bbox={this.bbox}
+                />
               ) : this.state.circlePozwolenia ? (
                 <CircularProgress
                   style={{
@@ -272,6 +284,7 @@ class MapClass extends React.Component {
               )}
             </LayersControl>
           </LayerGroup>
+          <ZoomControl position="bottomright" />
         </Map>
         <Legend zoom={this.state.viewport.zoom} />
       </React.Fragment>
