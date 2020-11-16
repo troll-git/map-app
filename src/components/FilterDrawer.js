@@ -14,32 +14,35 @@ import moment from "moment";
 import FiltersDate from "./FiltersDate";
 import FiltersCategory from "./FiltersCategory";
 import FiltersInvestor from "./FIltersInvestor";
-import KeyboardArrowLeftSharpIcon from '@material-ui/icons/KeyboardArrowLeftSharp';
+import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
+import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 
 const drawerWidth = "30hw";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
-    position:"relative",
+    position: "relative",
   },
   drawer: {
-      width: drawerWidth,
-      flexShrink: 0,
-      overflow:"hidden",
-      backgroundColor:"red"
-
+    width: drawerWidth,
+    flexShrink: 0,
+    overflow: "hidden",
+    backgroundColor: "red",
   },
-  toggleDrawer: {
+  hideDrawer: {
     position: "absolute",
     top: "150px",
-    left: "98%",
-    backgroundColor:"blue",
-    zIndex:999,
-    cursor: "pointer",
-    "&:hover": {
-      color: "red",
-    },
+    left: "100%",
+    backgroundColor: "white",
+    zIndex: 999,
+  },
+  showDrawer: {
+    position: "absolute",
+    top: "150px",
+    left: "0%",
+    backgroundColor: "white",
+    zIndex: 999,
   },
 }));
 
@@ -92,9 +95,12 @@ const FilterDrawer = (props) => {
     });
   };
 
-  const closeDrawer=()=>{
-    setOpen(false)
-  }
+  const closeDrawer = () => {
+    setOpen(false);
+  };
+  const openDrawer = () => {
+    setOpen(true);
+  };
 
   const updateInvestorFilterPozwolenia = (dataFromChild) => {
     setFilterData({
@@ -142,10 +148,20 @@ const FilterDrawer = (props) => {
 
   return (
     <div className={classes.root}>
-    <KeyboardArrowLeftSharpIcon
-      className={classes.toggleDrawer}
-      onClick={closeDrawer}
-    />
+      {open ? (
+        <ArrowBackIosIcon
+          className={classes.hideDrawer}
+          onClick={closeDrawer}
+          fontSize="large"
+        />
+      ) : (
+        <ArrowForwardIosIcon
+          className={classes.showDrawer}
+          onClick={openDrawer}
+          fontSize="large"
+        />
+      )}
+
       <Drawer
         className={classes.drawer}
         //BackdropProps={{ invisible: true }}

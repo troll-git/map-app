@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { GeoJSON } from "react-leaflet";
+import { Marker } from "react-leaflet";
+
 import LayerInfo from "../components/LayerInfo";
 
 import axios from "axios";
@@ -15,12 +17,21 @@ L.Icon.Default.mergeOptions({
   shadowUrl: require("leaflet/dist/images/marker-shadow.png"),
 });
 
+let myIcon = L.icon({
+  iconUrl: require("../assets/greenmarker.png"),
+  iconSize: [38, 38],
+  iconAnchor: [22, 94],
+  popupAnchor: [-3, -76],
+  shadowSize: [68, 95],
+  shadowAnchor: [22, 94],
+});
+
 const PozwoleniaLayer = (props) => {
   const [data, setData] = useState(undefined);
 
   const fetchData = async (id) => {
-    const result = await axios(process.env.REACT_APP_API_URL+
-      "api/pozwolenie/?id=" + id
+    const result = await axios(
+      process.env.REACT_APP_API_URL + "api/pozwolenie/?id=" + id
     );
     setData(result.data);
   };
@@ -40,15 +51,19 @@ const PozwoleniaLayer = (props) => {
         spiderfyDistanceMultiplier={2}
         iconCreateFunction={createClusterCustomIcon}
       >
-        <GeoJSON
-          style={{ color: "red" }}
-          data={props.dane}
-          onEachFeature={(feature, layer) => {
-            layer.on("click", () => {
-              fetchData(feature.id);
-            });
-          }}
-        />
+        {props.dane.features.map((pozw) => (
+          <Marker
+            key={pozw.id}
+            position={[
+              pozw.geometry.coordinates[1],
+              pozw.geometry.coordinates[0],
+            ]}
+            icon={myIcon}
+            onclick={() => {
+              fetchData(pozw.id);
+            }}
+          />
+        ))}
       </MarkerCluserGroup>
       <LayerInfo feat={data} type={"pozwolenie_info"} />
     </React.Fragment>

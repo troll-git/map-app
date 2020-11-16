@@ -12,10 +12,11 @@ import PozwoleniaLayer from "../components/PozwoleniaLayer";
 import WnioskiLayer from "../components/WnioskiLayer";
 import axios from "axios";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import Legend from "../components/Legend";
 
 const DEFAULT_VIEWPORT = {
   center: [49.55813806107707, 20.633729696273807],
-  zoom: 10,
+  zoom: 11,
 };
 
 class MapClass extends React.Component {
@@ -31,15 +32,16 @@ class MapClass extends React.Component {
       bbox: "",
       getPozwolenia: "false",
       feat: "",
-      circlePozwolenia:false,
-      circleWnioski:false
+      circlePozwolenia: false,
+      circleWnioski: false,
     };
   }
 
   fetchData = async () => {
     const map = this.mapRef.current;
-    const result = await axios(process.env.REACT_APP_API_URL+
-      "api/dzialki/?bbox=" +
+    const result = await axios(
+      process.env.REACT_APP_API_URL +
+        "api/dzialki/?bbox=" +
         this.getBoundaries(map)._southWest.lat +
         "," +
         this.getBoundaries(map)._southWest.lng +
@@ -58,9 +60,10 @@ class MapClass extends React.Component {
     const map = this.mapRef.current;
     this.setState({
       circlePozwolenia: true,
-    })
-    const result = await axios(process.env.REACT_APP_API_URL+
-      "api/pozwolenia_geom/?bbox=" +
+    });
+    const result = await axios(
+      process.env.REACT_APP_API_URL +
+        "api/pozwolenia_geom/?bbox=" +
         this.getBoundaries(map)._southWest.lat +
         "," +
         this.getBoundaries(map)._southWest.lng +
@@ -82,16 +85,17 @@ class MapClass extends React.Component {
     });
     this.setState({
       circlePozwolenia: false,
-    })
+    });
   };
 
   fetchWnioski = async () => {
     const map = this.mapRef.current;
     this.setState({
       circleWnioski: true,
-    })
-    const result = await axios(process.env.REACT_APP_API_URL+
-      "api/wnioski_geom/?bbox=" +
+    });
+    const result = await axios(
+      process.env.REACT_APP_API_URL +
+        "api/wnioski_geom/?bbox=" +
         this.getBoundaries(map)._southWest.lat +
         "," +
         this.getBoundaries(map)._southWest.lng +
@@ -111,7 +115,7 @@ class MapClass extends React.Component {
     });
     this.setState({
       circleWnioski: false,
-    })
+    });
   };
 
   componentDidMount() {
@@ -153,6 +157,7 @@ class MapClass extends React.Component {
     this.setState({ dane: null });
     this.setState({ pozwolenia: null });
     this.setState({ wnioski: null });
+    this.setState({ viewport: viewport });
 
     viewport.zoom > 17 ? this.fetchData() : this.setState({ dane: null });
 
@@ -231,27 +236,31 @@ class MapClass extends React.Component {
               </LayersControl.Overlay>
               {!!this.state.pozwolenia ? (
                 <PozwoleniaLayer dane={this.state.pozwolenia} />
-              ) :  (this.state.circlePozwolenia?(
+              ) : this.state.circlePozwolenia ? (
                 <CircularProgress
                   style={{
                     zIndex: 999,
                     position: "absolute",
                     top: 500,
                   }}
-                />):(<div></div>)
-              ) }
+                />
+              ) : (
+                <div></div>
+              )}
               {!!this.state.wnioski ? (
                 <WnioskiLayer dane={this.state.wnioski} />
-              ) :  (this.state.circleWnioski?(
+              ) : this.state.circleWnioski ? (
                 <CircularProgress
                   style={{
-                    color:"red",
+                    color: "red",
                     zIndex: 999,
                     position: "absolute",
                     top: 400,
                   }}
-                />):(<div></div>)
-              ) }
+                />
+              ) : (
+                <div></div>
+              )}
               {!!this.state.dane ? (
                 <PolygonLayer
                   bbox={this.getBbox}
@@ -264,6 +273,7 @@ class MapClass extends React.Component {
             </LayersControl>
           </LayerGroup>
         </Map>
+        <Legend zoom={this.state.viewport.zoom} />
       </React.Fragment>
     );
   }
