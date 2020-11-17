@@ -8,6 +8,7 @@ import axios from "axios";
 import L from "leaflet";
 import MarkerCluserGroup from "react-leaflet-markercluster";
 import "react-leaflet-markercluster/dist/styles.min.css";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 delete L.Icon.Default.prototype._getIconUrl;
 
@@ -28,12 +29,47 @@ let myIcon = L.icon({
 
 const PozwoleniaLayer = (props) => {
   const [data, setData] = useState(undefined);
+  const [circle, setCircle] = useState(false);
+  const [info, setInfo] = useState("");
+  let dane = undefined;
+
+  useEffect(() => {
+    console.log(props.filtry.from);
+    fetchPozwolenia();
+  }, []);
+
+  const fetchPozwolenia = async () => {
+    setCircle(true);
+    const result = await axios(
+      process.env.REACT_APP_API_URL +
+        "api/pozwolenia_geom/?bbox=" +
+        props.map.leafletElement.getBounds()._southWest.lat +
+        "," +
+        props.map.leafletElement.getBounds()._southWest.lng +
+        "," +
+        props.map.leafletElement.getBounds()._northEast.lat +
+        "," +
+        props.map.leafletElement.getBounds()._northEast.lng +
+        "&start_date=" +
+        props.filtry.from +
+        "&end_date=" +
+        props.filtry.to +
+        "&category=" +
+        props.filtry.category +
+        "&investor=" +
+        props.filtry.investor
+      // { CancelToken: source.token }
+    );
+    console.log(result.data);
+    dane = result.data;
+    setCircle(false);
+  };
 
   const fetchData = async (id) => {
     const result = await axios(
       process.env.REACT_APP_API_URL + "api/pozwolenie/?id=" + id
     );
-    setData(result.data);
+    setInfo(result.data);
   };
 
   const createClusterCustomIcon = function (cluster) {
@@ -47,26 +83,39 @@ const PozwoleniaLayer = (props) => {
 
   return (
     <React.Fragment>
-      <MarkerCluserGroup
-        spiderfyDistanceMultiplier={1}
-        iconCreateFunction={createClusterCustomIcon}
-        disableClusteringAtZoom={18}
-      >
-        {props.dane.features.map((pozw) => (
-          <Marker
-            key={pozw.id}
-            position={[
-              pozw.geometry.coordinates[1],
-              pozw.geometry.coordinates[0],
-            ]}
-            icon={myIcon}
-            onclick={() => {
-              fetchData(pozw.id);
-            }}
-          />
-        ))}
-      </MarkerCluserGroup>
-      <LayerInfo feat={data} type={"pozwolenie_info"} />
+      {dane ? (
+        <div>
+          <MarkerCluserGroup
+            spiderfyDistanceMultiplier={1}
+            iconCreateFunction={createClusterCustomIcon}
+            disableClusteringAtZoom={18}
+          >
+            {props.dane.features.map((pozw) => (
+              <Marker
+                key={pozw.id}
+                position={[
+                  pozw.geometry.coordinates[1],
+                  pozw.geometry.coordinates[0],
+                ]}
+                icon={myIcon}
+                onclick={() => {
+                  fetchData(pozw.id);
+                }}
+              />
+            ))}
+          </MarkerCluserGroup>
+        </div>
+      ) : circle ? (
+        <CircularProgress
+          style={{
+            zIndex: 999,
+            position: "absolute",
+            top: 500,
+          }}
+        />
+      ) : (
+        <div></div>
+      )}
     </React.Fragment>
   );
 };

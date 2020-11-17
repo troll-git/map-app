@@ -12,8 +12,8 @@ import PolygonLayer from "../components/PolygonLayer";
 import PozwoleniaLayer from "../components/PozwoleniaLayer";
 import WnioskiLayer from "../components/WnioskiLayer";
 import axios from "axios";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import Legend from "../components/Legend";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const DEFAULT_VIEWPORT = {
   center: [49.55813806107707, 20.633729696273807],
@@ -125,16 +125,14 @@ class MapClass extends React.Component {
   };
 
   componentDidMount() {
-    const map = this.mapRef.current;
-    this.setState({ bbox: this.getBoundaries(map) });
+    //this.setState({ bbox: this.getBoundaries() });
+    console.log(this.getBoundaries());
     this.fetchPozwolenia();
     this.fetchWnioski();
   }
 
   componentDidUpdate(prevProps) {
-    const map = this.mapRef.current;
-
-    if (
+    /*if (
       prevProps.enabledPozwolenia !== this.props.enabledPozwolenia ||
       prevProps.filtry !== this.props.filtry
     ) {
@@ -158,7 +156,7 @@ class MapClass extends React.Component {
       )
         this.fetchWnioski();
       if (!this.props.enabledWnioski) this.setState({ wnioski: null });
-    }
+    }*/
   }
 
   handleClick = (viewport) => {
@@ -181,7 +179,8 @@ class MapClass extends React.Component {
     }
   };
 
-  getBoundaries = (map) => {
+  getBoundaries = () => {
+    const map = this.mapRef.current;
     return map.leafletElement.getBounds();
   };
 
@@ -226,14 +225,12 @@ class MapClass extends React.Component {
                   //url="http://globalheat.strava.com/tiles/cycling/color7/color7/{z}/{x}/{y}.png"
                 />
               </LayersControl.BaseLayer>
-
               <LayersControl.BaseLayer name="esri">
                 <TileLayer
                   attribution='Tiles © <a href="https://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer">ArcGIS</a>'
                   url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}"
                 />
               </LayersControl.BaseLayer>
-
               <LayersControl.Overlay name="ortofotomapa">
                 <WMSTileLayer
                   url="http://mapy.geoportal.gov.pl/wss/service/img/guest/ORTO/MapServer/WMSServer?"
@@ -243,45 +240,13 @@ class MapClass extends React.Component {
                   opacity={0.8}
                 />
               </LayersControl.Overlay>
-              {!!this.state.pozwolenia ? (
-                <PozwoleniaLayer
-                  dane={this.state.pozwolenia}
-                  bbox={this.bbox}
-                />
-              ) : this.state.circlePozwolenia ? (
-                <CircularProgress
-                  style={{
-                    zIndex: 999,
-                    position: "absolute",
-                    top: 500,
-                  }}
-                />
-              ) : (
-                <div></div>
-              )}
-              {!!this.state.wnioski ? (
-                <WnioskiLayer dane={this.state.wnioski} />
-              ) : this.state.circleWnioski ? (
-                <CircularProgress
-                  style={{
-                    color: "red",
-                    zIndex: 999,
-                    position: "absolute",
-                    top: 400,
-                  }}
-                />
-              ) : (
-                <div></div>
-              )}
-              {!!this.state.dane ? (
-                <PolygonLayer
-                  bbox={this.getBbox}
-                  dane={this.state.dane}
-                  callBackFeat={this.callBackFeat}
-                />
-              ) : (
-                <p></p>
-              )}
+              <PozwoleniaLayer
+                enabled={true}
+                bbox={this.state.bbox}
+                zoom={this.state.viewport.zoom}
+                map={this.mapRef.current}
+                filtry={this.props.filtry}
+              />
             </LayersControl>
           </LayerGroup>
           <ZoomControl position="bottomright" />
