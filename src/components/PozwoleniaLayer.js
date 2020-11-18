@@ -29,6 +29,15 @@ let myIcon = L.icon({
 const PozwoleniaLayer = (props) => {
   const [data, setData] = useState(undefined);
 
+  useEffect(() => {
+    props.dane.map((pozw) => {
+      const id = pozw.id;
+      const x = pozw.point_wkt.split("(")[1].split(" ")[0];
+      const y = pozw.point_wkt.split("(")[1].split(" ")[1].split(")")[0];
+      console.log(id, x, y);
+    });
+  }, []);
+
   const fetchData = async (id) => {
     const result = await axios(
       process.env.REACT_APP_API_URL + "api/pozwolenie/?id=" + id
@@ -52,12 +61,12 @@ const PozwoleniaLayer = (props) => {
         iconCreateFunction={createClusterCustomIcon}
         disableClusteringAtZoom={18}
       >
-        {props.dane.features.map((pozw) => (
+        {props.dane.map((pozw) => (
           <Marker
             key={pozw.id}
             position={[
-              pozw.geometry.coordinates[1],
-              pozw.geometry.coordinates[0],
+              pozw.point_wkt.split("(")[1].split(" ")[1].split(")")[0],
+              pozw.point_wkt.split("(")[1].split(" ")[0],
             ]}
             icon={myIcon}
             onclick={() => {
