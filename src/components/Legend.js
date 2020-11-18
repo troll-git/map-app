@@ -64,13 +64,13 @@ export default function Legend(props) {
         <Paper>
           <h5>
             ZOOM: {props.zoom} |
-            {props.zoom > 10 ? (
+            {props.zoom > 11 ? (
               <CheckCircle className={classes.decyzje} />
             ) : (
               <CancelIcon className={classes.off} />
             )}
             Decyzje
-            {props.zoom > 10 ? (
+            {props.zoom > 11 ? (
               <CheckCircle className={classes.zgloszenia} />
             ) : (
               <CancelIcon className={classes.off} />

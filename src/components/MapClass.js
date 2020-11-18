@@ -17,7 +17,7 @@ import Legend from "../components/Legend";
 
 const DEFAULT_VIEWPORT = {
   center: [49.55813806107707, 20.633729696273807],
-  zoom: 11,
+  zoom: 12,
 };
 
 //Axios cancel token
@@ -139,7 +139,7 @@ class MapClass extends React.Component {
       prevProps.filtry !== this.props.filtry
     ) {
       if (
-        (map.viewport.zoom > 10 && this.props.enabledPozwolenia) ||
+        (map.viewport.zoom > 11 && this.props.enabledPozwolenia) ||
         (map.viewport.zoom === undefined && this.props.enabledPozwolenia)
       ) {
         this.setState({ pozwolenia: null });
@@ -153,7 +153,7 @@ class MapClass extends React.Component {
       prevProps.filtryWnioski !== this.props.filtryWnioski
     ) {
       if (
-        (map.viewport.zoom > 10 && this.props.enabledWnioski) ||
+        (map.viewport.zoom > 11 && this.props.enabledWnioski) ||
         (map.viewport.zoom === undefined && this.props.enabledWnioski)
       )
         this.fetchWnioski();
@@ -170,12 +170,12 @@ class MapClass extends React.Component {
     viewport.zoom > 17 ? this.fetchData() : this.setState({ dane: null });
 
     {
-      viewport.zoom > 10 && this.props.enabledPozwolenia
+      viewport.zoom > 11 && this.props.enabledPozwolenia
         ? this.fetchPozwolenia()
         : this.setState({ pozwolenia: null });
     }
     {
-      viewport.zoom > 10 && this.props.enabledWnioski
+      viewport.zoom > 11 && this.props.enabledWnioski
         ? this.fetchWnioski()
         : this.setState({ wnioski: null });
     }
