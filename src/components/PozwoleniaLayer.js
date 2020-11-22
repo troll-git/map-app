@@ -8,6 +8,7 @@ import axios from "axios";
 import L from "leaflet";
 import MarkerCluserGroup from "react-leaflet-markercluster";
 import "react-leaflet-markercluster/dist/styles.min.css";
+import moment from "moment"
 
 delete L.Icon.Default.prototype._getIconUrl;
 
@@ -28,15 +29,6 @@ let myIcon = L.icon({
 
 const PozwoleniaLayer = (props) => {
   const [data, setData] = useState(undefined);
-
-  useEffect(() => {
-    props.dane.map((pozw) => {
-      const id = pozw.id;
-      const x = pozw.point_wkt.split("(")[1].split(" ")[0];
-      const y = pozw.point_wkt.split("(")[1].split(" ")[1].split(")")[0];
-      console.log(id, x, y);
-    });
-  }, []);
 
   const fetchData = async (id) => {
     const result = await axios(
@@ -70,12 +62,12 @@ const PozwoleniaLayer = (props) => {
             ]}
             icon={myIcon}
             onclick={() => {
-              fetchData(pozw.id);
+              props.callBackInfo({id:pozw.id,type:"pozwolenie_info",token:moment.now()})
+              //fetchData(pozw.id);
             }}
           />
         ))}
       </MarkerCluserGroup>
-      <LayerInfo feat={data} type={"pozwolenie_info"} />
     </React.Fragment>
   );
 };

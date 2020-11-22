@@ -14,6 +14,9 @@ import Skeleton from "@material-ui/lab/Skeleton";
 import moment from "moment";
 import MuiAlert from "@material-ui/lab/Alert";
 import { Snackbar } from "@material-ui/core";
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
+
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -27,8 +30,14 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "40px",
     padding: "40px",
     fontSize: 20,
-    opacity: 0.8,
+    opacity: 0.4,
   },
+  snack:{
+    backgroundColor:"lightgreen",
+    color:"black",
+    opacity:0.6,
+  },
+
 }));
 
 const Home = (props) => {
@@ -36,6 +45,7 @@ const Home = (props) => {
   const [update, setUpdate] = useState(0);
   const [loaded, setLoaded] = useState(false);
   const [loadedUpdate, setLoadedUpdate] = useState(false);
+  const [snackbarOpen,setSnackbarOpen]=useState(true)
   const classes = useStyles();
   const fetchData = async () => {
     const result = await axios(process.env.REACT_APP_API_URL + "api/stats/?");
@@ -61,90 +71,20 @@ const Home = (props) => {
   const redirectToMap = () => {
     window.open(window.location.href + "map", "_self");
   };
+
+  const handleClose=()=>{
+
+    setSnackbarOpen(false)
+  }
   return (
     <div>
       <h1>MAPA GUNB</h1>
 
       <div>
-        <Grid container spacing={4} style={{ height: "100%" }}>
-          <Grid item className={classes.paper} xs={6}>
-            {loaded ? (
-              <div>
-                <h1>Aktualny stan</h1>
-                <TableContainer component={Paper}>
-                  <Table
-                    className={classes.table}
-                    size="large"
-                    aria-label="stan aktualny"
-                  >
-                    <TableHead>
-                      <TableRow>
-                        <TableCell>Stan aktualny</TableCell>
-                        <TableCell>Suma rekordów</TableCell>
-                        <TableCell>Suma rekordów na mapie</TableCell>
-                        <TableCell>%</TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      <TableRow>
-                        <TableCell>Liczba zgłoszeń</TableCell>
-                        <TableCell>
-                          <CountUpAnimation duration={500}>
-                            {data.wnioski}
-                          </CountUpAnimation>
-                        </TableCell>
-                        <TableCell>
-                          <CountUpAnimation duration={500}>
-                            {data.wnioski_geom}
-                          </CountUpAnimation>
-                        </TableCell>
-                        <TableCell>
-                          <CountUpAnimation duration={500}>
-                            {(data.wnioski_geom / data.wnioski) * 100}
-                          </CountUpAnimation>
-                        </TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>Liczba decyzji</TableCell>
-                        <TableCell>
-                          <CountUpAnimation duration={500}>
-                            {data.pozwolenia}
-                          </CountUpAnimation>
-                        </TableCell>
-                        <TableCell>
-                          <CountUpAnimation duration={500}>
-                            {data.pozwolenia_geom}
-                          </CountUpAnimation>
-                        </TableCell>
-                        <TableCell>
-                          <CountUpAnimation duration={500}>
-                            {(data.pozwolenia_geom / data.pozwolenia) * 100}
-                          </CountUpAnimation>
-                        </TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>Liczba działek</TableCell>
-
-                        <TableCell>
-                          <CountUpAnimation duration={1500}>
-                            {data.dzialki}
-                          </CountUpAnimation>
-                        </TableCell>
-                      </TableRow>
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-              </div>
-            ) : (
-              <div>
-                <Skeleton variant="text" height={30} animation="wave" />
-                <Skeleton variant="rect" height={300} animation="wave" />
-              </div>
-            )}
-          </Grid>
-          <Grid item className={classes.paper} xs={6}>
+        <Grid container spacing={0} style={{ height: "100%" }}>
+        <Grid item className={classes.paper} xs={12} sm={6}>
             {loadedUpdate ? (
-              <h1>Ostatnio zaktualizowano: {update.updated_at}</h1>
+              <h2>Ostatnio zaktualizowano: {update.updated_at}</h2>
             ) : (
               <div></div>
             )}
@@ -213,35 +153,105 @@ const Home = (props) => {
               </div>
             )*/}
           </Grid>
+          <Grid item className={classes.paper} xs={12} sm={6}>
+            {loaded ? (
+              <div>
+                <h2>Aktualny stan</h2>
+                <TableContainer component={Paper}>
+                  <Table
+                    className={classes.table}
+                    size="large"
+                    aria-label="stan aktualny"
+                  >
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Stan aktualny</TableCell>
+                        <TableCell>Suma rekordów</TableCell>
+                        <TableCell>Suma rekordów na mapie</TableCell>
+                        <TableCell>%</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      <TableRow>
+                        <TableCell>Liczba zgłoszeń</TableCell>
+                        <TableCell>
+                          <CountUpAnimation duration={500}>
+                            {data.wnioski}
+                          </CountUpAnimation>
+                        </TableCell>
+                        <TableCell>
+                          <CountUpAnimation duration={500}>
+                            {data.wnioski_geom}
+                          </CountUpAnimation>
+                        </TableCell>
+                        <TableCell>
+                          <CountUpAnimation duration={500}>
+                            {(data.wnioski_geom / data.wnioski) * 100}
+                          </CountUpAnimation>
+                        </TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell>Liczba decyzji</TableCell>
+                        <TableCell>
+                          <CountUpAnimation duration={500}>
+                            {data.pozwolenia}
+                          </CountUpAnimation>
+                        </TableCell>
+                        <TableCell>
+                          <CountUpAnimation duration={500}>
+                            {data.pozwolenia_geom}
+                          </CountUpAnimation>
+                        </TableCell>
+                        <TableCell>
+                          <CountUpAnimation duration={500}>
+                            {(data.pozwolenia_geom / data.pozwolenia) * 100}
+                          </CountUpAnimation>
+                        </TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell>Liczba działek</TableCell>
+
+                        <TableCell>
+                          <CountUpAnimation duration={1500}>
+                            {data.dzialki}
+                          </CountUpAnimation>
+                        </TableCell>
+                      </TableRow>
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </div>
+            ) : (
+              <div>
+                <Skeleton variant="text" height={30} animation="wave" />
+                <p>Pobieram dane....</p>
+                <Skeleton variant="rect" height={300} animation="wave" />
+              </div>
+            )}
+          </Grid>
+          
         </Grid>
       </div>
       <Snackbar
-        open={true}
-        autoHideDuration={2000}
+        open={snackbarOpen}
+        autoHideDuration={2000}  
+        variant={'success'}    
+        message="Na tej stronie prezentowane są dane pochodzące z RWDZ publikowane przez Główny Urząd Nadzoru Budowlanego. Można je
+        pobrać z ww strony w postaci plików CSV. Dane można przeglądać na
+        mapie poprzez kliknięcie zakładki 'MAPA'. Na mapie można stosować
+        filtry w celu zawężania obszru poszukiwań. Dane na tej stronie służą
+        jedynie celom poglądowym. Poniższe tabele prezentują aktualny stan
+        bazy danych oraz ilość rekordów po aktualizacji. Aktualizacja zasobów
+        odbywa się raz na dzień. Jeśli masz pytania odnośnie tej strony,
+        możesz skontaktować się poprzez formularz kontaktowy dostępny pod
+        zakładką kontakt."
+        action={  <IconButton size="small" aria-label="close" color="inherit" onClick={handleClose}>
+        <CloseIcon fontSize="small" />
+      </IconButton>}
+      ContentProps={{className:classes.snack}}
         //onClose={setSnackbarOpen(false)}
-      >
-        <MuiAlert
-          elevation={6}
-          variant="filled"
-          //onClose={handleClose}
-          severity="success"
-          icon={false}
-        >
-          Na tej stronie prezentowane są dane pochodzące z{" "}
-          <a href="http://wyszukiwarka.gunb.gov.pl/" target="_blank">
-            wyszukiwarki publicznej
-          </a>{" "}
-          RWDZ publikowane przez Główny Urząd Nadzoru Budowlanego. Można je
-          pobrać z ww strony w postaci plików CSV. Dane można przeglądać na
-          mapie poprzez kliknięcie zakładki "MAPA". Na mapie można stosować
-          filtry w celu zawężania obszru poszukiwań. Dane na tej stronie służą
-          jedynie celom poglądowym. Poniższe tabele prezentują aktualny stan
-          bazy danych oraz ilość rekordów po aktualizacji. Aktualizacja zasobów
-          odbywa się raz na dzień. Jeśli masz pytania odnośnie tej strony,
-          możesz skontaktować się poprzez formularz kontaktowy dostępny pod
-          zakładką kontakt.
-        </MuiAlert>
-      </Snackbar>
+      />
+      
     </div>
   );
 };

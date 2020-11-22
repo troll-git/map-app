@@ -36,6 +36,7 @@ class MapClass extends React.Component {
       bbox: "",
       getPozwolenia: "false",
       feat: "",
+      info:"",
       circlePozwolenia: false,
       circleWnioski: false,
     };
@@ -195,6 +196,11 @@ class MapClass extends React.Component {
   callBackFeat = (dataFromChild) => {
     this.setState({ feat: dataFromChild });
   };
+
+  callBackInfo = (dataFromChild) => {
+    //console.log(dataFromChild)
+    this.props.getInfo(dataFromChild);
+  };
   getBounds;
 
   render() {
@@ -247,6 +253,7 @@ class MapClass extends React.Component {
                 <PozwoleniaLayer
                   dane={this.state.pozwolenia}
                   bbox={this.bbox}
+                  callBackInfo={this.callBackInfo}
                 />
               ) : this.state.circlePozwolenia ? (
                 <CircularProgress
@@ -254,13 +261,14 @@ class MapClass extends React.Component {
                     zIndex: 999,
                     position: "absolute",
                     top: 500,
+                    color:"green"
                   }}
                 />
               ) : (
                 <div></div>
               )}
               {!!this.state.wnioski ? (
-                <WnioskiLayer dane={this.state.wnioski} />
+                <WnioskiLayer dane={this.state.wnioski} callBackInfo={this.callBackInfo}/>
               ) : this.state.circleWnioski ? (
                 <CircularProgress
                   style={{
@@ -285,8 +293,9 @@ class MapClass extends React.Component {
             </LayersControl>
           </LayerGroup>
           <ZoomControl position="bottomright" />
+          
         </Map>
-        <Legend zoom={this.state.viewport.zoom} />
+        <Legend offset={this.props.width/4} topoffset={this.props.height-70} zoom={this.state.viewport.zoom} />
       </React.Fragment>
     );
   }

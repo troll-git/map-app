@@ -22,7 +22,7 @@ function App() {
       {" "}
       <Router>
         <AppBar position="static">
-          <Grid container>
+          <Grid container style={{height:'50px'}}>
             <Grid item xs={12} sm={6}></Grid>
             <Grid item xs={12} sm={6}>
               <Grid container justify={"flex-end"}>

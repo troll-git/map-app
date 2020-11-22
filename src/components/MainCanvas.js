@@ -6,12 +6,18 @@ import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
 import ContainerDimensions from "react-container-dimensions";
 import axios from "axios";
+import { Paper, Dialog, DialogTitle, DialogContent,Button } from "@material-ui/core";
+import { ClickAwayListener } from "@material-ui/core";
+import LayerInfo from "../components/LayerInfo"
 
+
+
+const maph=document.documentElement.clientHeight-50
 const useStyles = makeStyles((theme) => ({
   root: {
-    //flexGrow: 1,
+    flexGrow: 1,
     backgroundColor: "red",
-    height: "100vh",
+    height: maph,
   },
   paper: {
     textAlign: "center",
@@ -24,7 +30,15 @@ const MainCanvas = () => {
   const [enabledWnioski, setEnableWnioski] = useState(true);
   const [Filtry, setFiltry] = useState("undefined");
   const [FiltryWnioski, setFiltryWnioski] = useState("undefined");
+  const [open,setOpen]=useState(false)
+  const [info,setInfo]=useState(undefined)
   const classes = useStyles();
+
+  const handleClose = () => {
+    console.log("click away")
+    setOpen(false);
+    //setData(props.feat[0]);
+  };
 
   const fetchData = async () => {
     const result = await axios(
@@ -48,8 +62,11 @@ const MainCanvas = () => {
     fetchData();
   }, []);
 
+
+
   const callBackPozwolenia = (dataFromChild) => {
     setEnablePozwolenia(dataFromChild);
+
   };
   const callBackWnioski = (dataFromChild) => {
     setEnableWnioski(dataFromChild);
@@ -61,9 +78,14 @@ const MainCanvas = () => {
   const callBackFiltryWnioski = (dataFromChild) => {
     setFiltryWnioski(dataFromChild);
   };
+  const callBackInfo= (dataFromChild) => {
+    console.log("new info")
+    setInfo(dataFromChild)
+       
+  };
 
   return (
-    <div className="main-canvas">
+    <div>
       <Grid container spacing={0}>
         <Grid item className={classes.paper} xs={2}>
           <FilterDrawer
@@ -73,17 +95,27 @@ const MainCanvas = () => {
             cbFiltersWnioski={callBackFiltryWnioski}
           />
         </Grid>
-        <Grid item className={classes.root} xs={12}>
+        <Grid className={classes.root} item xs={12}>
           <ContainerDimensions>
             <MapClass
               enabledPozwolenia={enabledPozwolenia}
               enabledWnioski={enabledWnioski}
               filtry={Filtry}
               filtryWnioski={FiltryWnioski}
+              getInfo={callBackInfo}
             />
           </ContainerDimensions>
         </Grid>
       </Grid>
+      
+      {info ? (
+        <LayerInfo info={info} height={maph}/>
+      ) : (
+        <div></div>
+      )}
+    
+      
+      
     </div>
   );
 };

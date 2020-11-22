@@ -6,6 +6,7 @@ import axios from "axios";
 import L from "leaflet";
 import MarkerCluserGroup from "react-leaflet-markercluster";
 import "react-leaflet-markercluster/dist/styles.min.css";
+import moment from "moment"
 
 let myIcon = L.icon({
   iconUrl: require("../assets/redmarker.png"),
@@ -19,11 +20,7 @@ let myIcon = L.icon({
 const WnioskiLayer = (props) => {
   const [data, setData] = useState(undefined);
 
-  const fetchData = async (id) => {
-    const result = await axios(process.env.REACT_APP_API_URL+"api/wniosek/?id=" + id);
-    console.log(result.data);
-    setData(result.data);
-  };
+  
 
   const createClusterCustomIcon = function (cluster) {
     return L.divIcon({
@@ -49,12 +46,13 @@ const WnioskiLayer = (props) => {
             ]}
             icon={myIcon}
             onclick={() => {
-              fetchData(wniosek.id);
+              //fetchData(wniosek.id);
+              props.callBackInfo({id:wniosek.id,type:"wniosek_info",token:moment.now()})
             }}
           />
         ))}
       </MarkerCluserGroup>
-      <LayerInfo feat={data} type={"wniosek_info"} />
+    
     </React.Fragment>
   );
 };

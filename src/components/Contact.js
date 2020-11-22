@@ -11,10 +11,10 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     color: theme.palette.text.secondary,
     margin: "auto",
-    width: "40vw",
+    width: "60vw",
   },
   paperinfo: {
-    width: "30%",
+    width: "60%",
     margin: "auto",
     marginTop: "40px",
     padding: "10px",

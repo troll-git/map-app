@@ -1,16 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { useEffect, useState } from "react";
 import { Paper, Popper, Divider } from "@material-ui/core";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableRow from "@material-ui/core/TableRow";
-import { ClickAwayListener } from "@material-ui/core";
-import KategoriaPopup from "../utils/KategoriaPopup";
-import HighlightOffIcon from "@material-ui/icons/HighlightOff";
-import { CheckCircle } from "@material-ui/icons";
+import { Autorenew, CheckCircle } from "@material-ui/icons";
 import CancelIcon from "@material-ui/icons/Cancel";
 
 const useStyles = makeStyles((theme) => ({
@@ -20,15 +11,6 @@ const useStyles = makeStyles((theme) => ({
   },
   decyzjePanel: {
     backgroundColor: "#2981CA",
-  },
-  buttonClose: {
-    position: "absolute",
-    top: "15px",
-    right: "10px",
-    cursor: "pointer",
-    "&:hover": {
-      color: "red",
-    },
   },
   dzialki: {
     color: "blue",
@@ -42,6 +24,11 @@ const useStyles = makeStyles((theme) => ({
   off: {
     color: "grey",
   },
+  legend: {
+    zIndex: 999,
+    display:"inline-block"
+
+  }
 }));
 
 export default function Legend(props) {
@@ -50,38 +37,28 @@ export default function Legend(props) {
 
   return (
     <div>
-      <Popper
+      <Popper className={classes.legend} style={{position:"relative",left:props.offset,top:props.topoffset}}
         open={true}
-        style={{
-          zIndex: 999,
-          position: "relative",
-          //       top: 500,
-          left: "35%",
-          width: "30%",
-        }}
         disablePortal="true"
       >
         <Paper>
           <h5>
             ZOOM: {props.zoom} |
             {props.zoom > 11 ? (
-              <CheckCircle className={classes.decyzje} />
+              <CheckCircle fontSize="small" className={classes.decyzje} />
             ) : (
-              <CancelIcon className={classes.off} />
+              <CancelIcon fontSize="small" className={classes.off} />
             )}
-            Decyzje
             {props.zoom > 11 ? (
-              <CheckCircle className={classes.zgloszenia} />
+              <CheckCircle fontSize="small" className={classes.zgloszenia} />
             ) : (
-              <CancelIcon className={classes.off} />
+              <CancelIcon fontSize="small" className={classes.off} />
             )}{" "}
-            Zgłoszenia{"  "}
             {props.zoom > 17 ? (
-              <CheckCircle className={classes.dzialki} />
+              <CheckCircle fontSize="small" className={classes.dzialki} />
             ) : (
-              <CancelIcon className={classes.off} />
+              <CancelIcon fontSize="small" className={classes.off} />
             )}{" "}
-            Działki
           </h5>
         </Paper>
       </Popper>

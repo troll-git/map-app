@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
 
 const FilterDrawer = (props) => {
   const classes = useStyles();
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
 
   const thisYearStart = moment().startOf("year").format("YYYY-MM-DD");
   const thisYearNow = moment().format("YYYY-MM-DD");
