@@ -16,6 +16,7 @@ import FiltersCategory from "./FiltersCategory";
 import FiltersInvestor from "./FIltersInvestor";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
+import { purple } from '@material-ui/core/colors';
 
 const drawerWidth = "30hw";
 
@@ -44,6 +45,14 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "white",
     zIndex: 999,
   },
+  greenSwitch:{
+    switchBase: {
+      color: purple[300],
+      '&$checked': {
+        color: purple[500],
+      },}
+  }
+
 }));
 
 const FilterDrawer = (props) => {
@@ -61,13 +70,13 @@ const FilterDrawer = (props) => {
   const [ExpandedPozwolenia, setExpandedPozwolenia] = useState(false);
   const [ExpandedWnioski, setExpandedWnioski] = useState(false);
   const [FilterData, setFilterData] = useState({
-    from: weekAgo,
+    from: monthAgo,
     to: thisYearNow,
     category: categoryEmpty,
     investor: "",
   });
   const [FilterDataWnioski, setFilterDataWnioski] = useState({
-    from: weekAgo,
+    from: monthAgo,
     to: thisYearNow,
     category: categoryEmpty,
   });
@@ -194,6 +203,7 @@ const FilterDrawer = (props) => {
                 <Switch
                   name="Pozwolenia"
                   onChange={handleChangePozwolenia}
+                  className={classes.greenSwitch}
                   color="primary"
                   checked={checkedPozwolenia}
                 />

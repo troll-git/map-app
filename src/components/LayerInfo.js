@@ -27,15 +27,9 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.paper,
     //overflow:"auto"
   },
-  table: {
-    //position: "absolute",
-    //width: 250,
-    //height: 300,
-    //backgroundColor: theme.palette.background.paper,
-    //overflow:"auto"
-  },
+  
   decyzjePanel: {
-    backgroundColor: "#2981CA",
+    backgroundColor: "#009000",
   },
   wnioskiPanel: {
     backgroundColor: "#E74C3C",

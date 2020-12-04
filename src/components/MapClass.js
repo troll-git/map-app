@@ -16,8 +16,8 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import Legend from "../components/Legend";
 
 const DEFAULT_VIEWPORT = {
-  center: [49.55813806107707, 20.633729696273807],
-  zoom: 12,
+  center: [50.06143, 19.93658],
+  zoom: 13,
 };
 
 //Axios cancel token

@@ -15,8 +15,8 @@ const FiltersDate = (props) => {
   const thisYearNow = moment().format("YYYY-MM-DD");
   const monthAgo = moment().add(-30, "days").format("YYYY-MM-DD");
   const weekAgo = moment().add(-7, "days").format("YYYY-MM-DD");
-  const [dateOption, setDateOption] = useState("lastWeek");
-  const [dateFrom, setDateFrom] = useState(weekAgo);
+  const [dateOption, setDateOption] = useState("lastMonth");
+  const [dateFrom, setDateFrom] = useState(monthAgo);
   const [dateTo, setDateTo] = useState(thisYearNow);
   const [calendarDisabled, setCalendarDisabled] = useState(true);
 

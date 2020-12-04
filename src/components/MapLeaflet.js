@@ -15,7 +15,7 @@ const MapLeaflet = () => {
     [45, 56],
     [0, 5],
   ]);
-  const [center, setCenter] = useState([49.56, 20.635]);
+  const [center, setCenter] = useState([50.06, 19.93]);
   const [dane, setDane] = useState(undefined);
   const [zoom, setZoom] = useState(20);
 
