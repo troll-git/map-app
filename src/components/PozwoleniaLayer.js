@@ -21,7 +21,7 @@ L.Icon.Default.mergeOptions({
 let myIcon = L.icon({
   iconUrl: require("../assets/greenmarker.png"),
   iconSize: [38, 38],
-  iconAnchor: [22, 94],
+  iconAnchor: [19, 38],
   popupAnchor: [-3, -76],
   shadowSize: [68, 95],
   shadowAnchor: [22, 94],
